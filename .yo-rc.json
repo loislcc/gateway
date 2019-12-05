@@ -1,0 +1,35 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "edu.buaa"
+    },
+    "jhipsterVersion": "5.8.2",
+    "applicationType": "gateway",
+    "baseName": "gateway",
+    "packageName": "edu.buaa",
+    "packageFolder": "edu/buaa",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "hazelcast",
+    "enableHibernateCache": false,
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": "kafka",
+    "serviceDiscoveryType": "consul",
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "ZWNkNDA5ZTZlYjIwOWJiZjE5YzBiMTY0MzNhZmFlNjJjNTg3NmMzMTA5NjA4ZDc0MWQ2NzIxMDlkYmRjNDc1MDdlMjU1NjJhODgyOGVhMDYwYmE1MTlkYWEyYmE1YjExMjAyOGUzMDM5MmIyMDQwZGE0NDhkMGZlODg2ODA4ZDE=",
+    "clientFramework": "angularX",
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false
+  }
+}
