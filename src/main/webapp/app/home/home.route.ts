@@ -1,12 +1,14 @@
 import { Route } from '@angular/router';
 
 import { HomeComponent } from './';
+import { mapRoutes } from 'app/map/map.route';
 
 export const HOME_ROUTE: Route = {
     path: '',
     component: HomeComponent,
     data: {
         authorities: [],
-        pageTitle: 'Welcome, Java Hipster!'
-    }
+        pageTitle: 'Gateway'
+    },
+    children: [...mapRoutes]
 };

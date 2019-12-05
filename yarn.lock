@@ -29,6 +29,22 @@
     "@angular-devkit/core" "7.3.1"
     rxjs "6.3.3"
 
+"@angular/animations@^7.2.4":
+  version "7.2.15"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-7.2.15.tgz#980c1f523a79d4b7cb44508f57fba06f2e0872fa"
+  integrity sha512-8oBt3HLgd2+kyJHUgsd7OzKCCss67t2sch15XNoIWlOLfxclqU+EfFE6t/vCzpT8/+lpZS6LU9ZrTnb+UBj5jg==
+  dependencies:
+    tslib "^1.9.0"
+
+"@angular/cdk@^7.2.4":
+  version "7.3.7"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-7.3.7.tgz#ce1ad53ba04beb9c8e950acc5691ea0143753764"
+  integrity sha512-xbXxhHHKGkVuW6K7pzPmvpJXIwpl0ykBnvA2g+/7Sgy5Pd35wCC+UtHD9RYczDM/mkygNxMQtagyCErwFnDtQA==
+  dependencies:
+    tslib "^1.7.1"
+  optionalDependencies:
+    parse5 "^5.0.0"
+
 "@angular/cli@7.3.1":
   version "7.3.1"
   resolved "https://registry.npm.taobao.org/@angular/cli/download/@angular/cli-7.3.1.tgz#a18acdec84deb03a1fae79cae415bbc8f9c87ffa"
@@ -7924,6 +7940,11 @@ parse5@4.0.0:
   resolved "https://registry.npm.taobao.org/parse5/download/parse5-4.0.0.tgz#6d78656e3da8d78b4ec0b906f7c08ef1dfe3f608"
   integrity sha1-bXhlbj2o14tOwLkG98CO8d/j9gg=
 
+parse5@^5.0.0:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/parse5/-/parse5-5.1.1.tgz#f68e4e5ba1852ac2cadc00f4555fff6c2abb6178"
+  integrity sha512-ugq4DFI0Ptb+WWjAdOK16+u/nHfiIrcE+sh8kZMaM0WllQKLI9rOUq6c2b7cwPkXdzfQESqvoqK6ug7U/Yyzug==
+
 parseqs@0.0.5:
   version "0.0.5"
   resolved "https://registry.npm.taobao.org/parseqs/download/parseqs-0.0.5.tgz#d5208a3738e46766e291ba2ea173684921a8b89d"
@@ -8530,6 +8551,28 @@ pretty-format@^24.9.0:
     ansi-regex "^4.0.0"
     ansi-styles "^3.2.0"
     react-is "^16.8.4"
+
+primeflex@1.0.0-rc.1:
+  version "1.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/primeflex/-/primeflex-1.0.0-rc.1.tgz#8f3555522238870500baa8587e360095261fff5f"
+  integrity sha512-JVrQE0ulyP0UJ3Rn8UI1RjmpHU/f4CIm7BI18xoMLlUriAViiykFMmtDTvUC0AZWHl4YhgEvHJIZ7EERxER2cg==
+
+primeicons@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/primeicons/-/primeicons-1.0.0.tgz#90061f168ef6227f21f0a7db8204ffa85cd27aec"
+  integrity sha512-p/hzIjUVccW4eJPhuORHI3AUkDpqfvCQVrjxbFEejnTEdWY4C8fomVfjiaA9jCu83fSQnBHuRIGB96iAR8R6uA==
+
+primeng-extensions@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/primeng-extensions/-/primeng-extensions-0.1.2.tgz#db775bc00cd99db48c14cd71cf5d6c95faa87416"
+  integrity sha512-cozrbY10X0Fh6FYlqkwQ0PfzmjE4kH9igHxGSF7LoZzPXVx5mUl6ECmFIB0zZ7WAj1WaQTrmsylpQSmLpU1zTw==
+  dependencies:
+    rxjs-compat "^6.3.2"
+
+primeng@7.0.5:
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/primeng/-/primeng-7.0.5.tgz#9a2e5921a7dcdd0052e99e11f7d23ea1953d155b"
+  integrity sha512-CVc6XxMZEsuCKXkyLUI/bRKX+spSBnEwqOFnAeXfSjIq0Uok51Dnrn8yNHyAWU2YRx93h7NWgxBtSXWVddEwqg==
 
 private@^0.1.6, private@~0.1.5:
   version "0.1.8"
@@ -9237,6 +9280,11 @@ rx@4.1.0, rx@^4.1.0:
   version "4.1.0"
   resolved "https://registry.npm.taobao.org/rx/download/rx-4.1.0.tgz#a5f13ff79ef3b740fe30aa803fb09f98805d4782"
   integrity sha1-pfE/957zt0D+MKqAP7CfmIBdR4I=
+
+rxjs-compat@^6.3.2:
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/rxjs-compat/-/rxjs-compat-6.5.3.tgz#18440949b2678bf87a78a754009676b2c49183dc"
+  integrity sha512-BIJX2yovz3TBpjJoAZyls2QYuU6ZiCaZ+U96SmxQpuSP/qDUfiXPKOVLbThBB2WZijNHkdTTJXKRwvv5Y48H7g==
 
 rxjs@6.3.3:
   version "6.3.3"
@@ -10556,7 +10604,7 @@ tslib@1.9.3:
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
   integrity sha1-1+TdeSRdhUKMTX5IIqeZF5VMooY=
 
-tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.7.1, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.10.0"
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha1-w8GflZc/sKYpc/sJ2Q2WHuQ+XIo=
