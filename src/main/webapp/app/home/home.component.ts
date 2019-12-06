@@ -3,7 +3,8 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { MenuItem, Message } from 'primeng/components/common/api';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { LoginModalService, AccountService, Account } from 'app/core';
+import { LoginModalService, AccountService, Account, LoginService, StateStorageService } from 'app/core';
+import { Router } from '@angular/router';
 declare var BMap: any;
 
 @Component({
@@ -17,11 +18,15 @@ export class HomeComponent implements OnInit {
     private items: MenuItem[];
     navClose = false;
     toggleDescTip = '点击关闭导航菜单';
+    authenticationError: boolean;
 
     constructor(
         private accountService: AccountService,
         private loginModalService: LoginModalService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private loginService: LoginService,
+        private stateStorageService: StateStorageService,
+        private router: Router
     ) {
         this.items = [
             {
@@ -33,16 +38,41 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.initlogin();
         this.accountService.identity().then((account: Account) => {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
-        // const map = new BMap.Map('map'); // 创建地图实例
-        // const point = new BMap.Point(116.404, 39.915); // 创建点坐标
-        // map.centerAndZoom(point, 15); // 初始化地图，设置中心点坐标和地图级别
-        // map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
     }
+    initlogin() {
+        this.loginService
+            .login({
+                username: 'admin',
+                password: 'admin',
+                rememberMe: true
+            })
+            .then(() => {
+                this.authenticationError = false;
+                if (this.router.url === '/register' || /^\/activate\//.test(this.router.url) || /^\/reset\//.test(this.router.url)) {
+                    this.router.navigate(['']);
+                }
+                this.eventManager.broadcast({
+                    name: 'authenticationSuccess',
+                    content: 'Sending Authentication Success'
+                });
 
+                // previousState was set in the authExpiredInterceptor before being redirected to login modal.
+                // since login is successful, go to stored previousState and clear previousState
+                const redirect = this.stateStorageService.getUrl();
+                if (redirect) {
+                    this.stateStorageService.storeUrl(null);
+                    this.router.navigate([redirect]);
+                }
+            })
+            .catch(() => {
+                this.authenticationError = true;
+            });
+    }
     registerAuthenticationSuccess() {
         this.eventManager.subscribe('authenticationSuccess', message => {
             this.accountService.identity().then(account => {
@@ -66,7 +96,4 @@ export class HomeComponent implements OnInit {
             this.toggleDescTip = '点击关闭导航菜单';
         }
     }
-    // getCurrentPage() {
-    //     return this.gatewayservice.getCurrentPage();
-    // }
 }

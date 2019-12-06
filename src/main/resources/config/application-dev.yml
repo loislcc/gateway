@@ -47,8 +47,8 @@ spring:
                     zk-nodes: localhost
             bindings:
                 notificationToGateway:
-                    destination: notification_gateway
-                    group: gateway
+                    destination: gateway
+                    group: targetDetection
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:mysql://localhost:3307/gateway?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
