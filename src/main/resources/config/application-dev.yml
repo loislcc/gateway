@@ -46,14 +46,14 @@ spring:
                     brokers: localhost
                     zk-nodes: localhost
             bindings:
-                SynchronizeTargetChannel:
-                    destination: gateway
-                    group: targetDetection
+                notificationToGateway:
+                    destination: notification_gateway
+                    group: gateway
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:mysql://localhost:3307/gateway?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
         username: root
-        password: lcly6557
+        password: root
         hikari:
             poolName: Hikari
             auto-commit: false
