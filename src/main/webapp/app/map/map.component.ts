@@ -39,6 +39,9 @@ export class MapComponent implements OnInit {
             map.addOverlay(marker); // 将标注添加到地图中
             addClickHandler(content, marker);
         }
+
+        this.trackerService.unsubscribe();
+        this.trackerService.disconnect();
         this.trackerService.setTopic('notification');
         this.trackerService.connect();
         this.trackerService.subscribe();

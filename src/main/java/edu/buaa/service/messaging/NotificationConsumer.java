@@ -1,6 +1,6 @@
 package edu.buaa.service.messaging;
 
-import edu.buaa.domain.Notification;
+import edu.buaa.domain.TargetNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -21,8 +21,8 @@ public class NotificationConsumer {
     }
 
     @StreamListener(NotificationInChannel.CHANNEL)
-    public void listen(Notification msg) {
-        log.debug("listen Notification from edge: {}", msg);
+    public void listen(TargetNotification msg) {
+        log.debug("listen Notification from edge: {}", msg.getCategory());
         messagingTemplate.convertAndSend("/topic/notification", msg);
     }
 }
