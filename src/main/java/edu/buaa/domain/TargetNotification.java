@@ -7,6 +7,7 @@ public class TargetNotification {
 
     private String currentTime;
     private String category;
+    private String ip;
     private  double longitude;
     private  double latitude;
 
@@ -61,22 +62,45 @@ public class TargetNotification {
         this.selfLatitude = selfLatitude;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         TargetNotification that = (TargetNotification) o;
-        return Double.compare(that.longitude, longitude) == 0 &&
-            Double.compare(that.latitude, latitude) == 0 &&
-            Double.compare(that.selfLongitude, selfLongitude) == 0 &&
-            Double.compare(that.selfLatitude, selfLatitude) == 0 &&
-            Objects.equals(currentTime, that.currentTime) &&
-            Objects.equals(category, that.category);
+
+        if (Double.compare(that.longitude, longitude) != 0) return false;
+        if (Double.compare(that.latitude, latitude) != 0) return false;
+        if (Double.compare(that.selfLongitude, selfLongitude) != 0) return false;
+        if (Double.compare(that.selfLatitude, selfLatitude) != 0) return false;
+        if (currentTime != null ? !currentTime.equals(that.currentTime) : that.currentTime != null) return false;
+        if (category != null ? !category.equals(that.category) : that.category != null) return false;
+        return ip != null ? ip.equals(that.ip) : that.ip == null;
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(currentTime, category, longitude, latitude, selfLongitude, selfLatitude);
+        int result;
+        long temp;
+        result = currentTime != null ? currentTime.hashCode() : 0;
+        result = 31 * result + (category != null ? category.hashCode() : 0);
+        result = 31 * result + (ip != null ? ip.hashCode() : 0);
+        temp = Double.doubleToLongBits(longitude);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(latitude);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(selfLongitude);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(selfLatitude);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 }
