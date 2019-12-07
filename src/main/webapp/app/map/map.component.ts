@@ -9,20 +9,27 @@ declare var BMap: any;
     styles: []
 })
 export class MapComponent implements OnInit {
+    initX: any;
+    initY: any;
+
     constructor(private trackerService: TrackerService) {}
 
     ngOnInit() {
+        this.initX = 116.35754;
+        this.initY = 39.987037;
+
         const map = new BMap.Map('map');
-        map.centerAndZoom(new BMap.Point(116.417854, 39.921988), 15);
+        map.centerAndZoom(new BMap.Point(this.initX, this.initY), 18);
+
         map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
-        const data_info = [[116.417854, 39.921988, '建筑物'], [116.406605, 39.921585, '车辆'], [116.412222, 39.912345, '涵洞']];
+        const data_info = [[this.initX, this.initY, '设备']];
         const opts = {
             width: 250, // 信息窗口宽度
             height: 150, // 信息窗口高度
             title: '标记详情', // 信息窗口标题
-            enableMessage: true //设置允许信息窗发送短息
+            enableMessage: true // 设置允许信息窗发送短息
         };
-        for (var i = 0; i < data_info.length; i++) {
+        for (let i = 0; i < data_info.length; i++) {
             const marker = new BMap.Marker(new BMap.Point(data_info[i][0], data_info[i][1])); // 创建标注
             // const content = data_info[i][2];
             const content =
@@ -73,11 +80,12 @@ export class MapComponent implements OnInit {
                 openInfo(content, e);
             });
         }
+
         function openInfo(content, e) {
             const p = e.target;
             const point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
             const infoWindow = new BMap.InfoWindow(content, opts); // 创建信息窗口对象
-            map.openInfoWindow(infoWindow, point); //开启信息窗口
+            map.openInfoWindow(infoWindow, point); // 开启信息窗口
         }
     }
 }
