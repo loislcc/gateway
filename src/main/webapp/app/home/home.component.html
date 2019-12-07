@@ -1,39 +1,40 @@
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=nSxiPohfziUaCuONe4ViUP2N"></script>
-<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=nSxiPohfziUaCuONe4ViUP2N"></script>-->
+<!--<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>-->
 
-<div class="c-wrapper">
-    <div class="c-left-wrapper" [ngClass]="{'c-left-wrapper-c': navClose,'c-left-wrapper-o': !navClose}">
-        <div class="c-header">
-            <!--<img src="assets/img/logo.png" />-->
-            <h3>Gateway</h3>
-        </div>
-        <p-panelMenu [model]="items"></p-panelMenu>
-        <!--<c-sidebar-menu [data]="mainData.menuData"></c-sidebar-menu>-->
-    </div>
+<!--<div class="c-wrapper">-->
+    <!--<div class="c-left-wrapper" [ngClass]="{'c-left-wrapper-c': navClose,'c-left-wrapper-o': !navClose}">-->
+        <!--<div class="c-header">-->
+            <!--&lt;!&ndash;<img src="assets/img/logo.png" />&ndash;&gt;-->
+            <!--<h3>Gateway</h3>-->
+        <!--</div>-->
+        <!--<p-panelMenu [model]="items"></p-panelMenu>-->
+        <!--&lt;!&ndash;<c-sidebar-menu [data]="mainData.menuData"></c-sidebar-menu>&ndash;&gt;-->
+    <!--</div>-->
 
-        <div class="c-right-wrapper" [ngClass]="{'c-right-wrapper-c': navClose,'c-right-wrapper-o': !navClose}">
-            <div class="c-header">
-                <div class="c-title">
-                    <button class="btn btn-light btn-xs" (click)="toggleNav();" placement="right"
-                            [ngbTooltip]="toggleDescTip">
-                        <i class="fa fa-dedent fa-fw" [hidden]="navClose"></i>
-                        <i class="fa fa-indent fa-fw" [hidden]="!navClose"></i>
-                    </button>
-<!--                    <h3>{{getCurrentPage()}}</h3>-->
-                </div>
-            </div>
-            <div class="c-content-wrapper" c-custom-scrollbar>
-                <div class="c-content">
-                    <div class="ui-g ui-g-nopad">
-                        <div class="ui-g-12">
-                            <router-outlet></router-outlet>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-</div>
+        <!--<div class="c-right-wrapper" [ngClass]="{'c-right-wrapper-c': navClose,'c-right-wrapper-o': !navClose}">-->
+            <!--<div class="c-header">-->
+                <!--<div class="c-title">-->
+                    <!--<button class="btn btn-light btn-xs" (click)="toggleNav();" placement="right"-->
+                            <!--[ngbTooltip]="toggleDescTip">-->
+                        <!--<i class="fa fa-dedent fa-fw" [hidden]="navClose"></i>-->
+                        <!--<i class="fa fa-indent fa-fw" [hidden]="!navClose"></i>-->
+                    <!--</button>-->
+<!--&lt;!&ndash;                    <h3>{{getCurrentPage()}}</h3>&ndash;&gt;-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="c-content-wrapper" c-custom-scrollbar>-->
+                <!--<div class="c-content">-->
+                    <!--<div class="ui-g ui-g-nopad">-->
+                        <!--<div class="ui-g-12">-->
+                            <!--<router-outlet></router-outlet>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+<!--</div>-->
 
+<router-outlet></router-outlet>
 
 
 <!--<p-growl [value]="msgs"></p-growl>-->
