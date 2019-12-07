@@ -18,7 +18,7 @@ export class MapComponent implements OnInit {
         const data_info = [[116.417854, 39.921988, '建筑物'], [116.406605, 39.921585, '车辆'], [116.412222, 39.912345, '涵洞']];
         const opts = {
             width: 250, // 信息窗口宽度
-            height: 250, // 信息窗口高度
+            height: 150, // 信息窗口高度
             title: '标记详情', // 信息窗口标题
             enableMessage: true //设置允许信息窗发送短息
         };
@@ -39,11 +39,33 @@ export class MapComponent implements OnInit {
             map.addOverlay(marker); // 将标注添加到地图中
             addClickHandler(content, marker);
         }
+
+        this.trackerService.unsubscribe();
+        this.trackerService.disconnect();
         this.trackerService.setTopic('notification');
         this.trackerService.connect();
         this.trackerService.subscribe();
         this.trackerService.receive().subscribe(data => {
             console.log(data);
+            const x = data.selfLongitude + data.longitude;
+            const y = data.selfLatitude + data.latitude;
+            const marker = new BMap.Marker(new BMap.Point(x, y)); // 创建标注
+            // const content = data_info[i][2];
+            const content =
+                '<div style="margin:0;line-height:20px;padding:2px;">' +
+                '<img src = "../../content/images/access.png" alt = "" style = "float: right; zoom:1; overflow: hidden; width: 100px; height: 100px; margin-left: 3px;"/>' +
+                '名称：' +
+                data.category +
+                '<br/> x：' +
+                x +
+                '<br/> y：' +
+                y +
+                '<br/> 时间：' +
+                data.currentTime +
+                '</div>';
+
+            map.addOverlay(marker); // 将标注添加到地图中
+            addClickHandler(content, marker);
         });
 
         function addClickHandler(content, marker) {
