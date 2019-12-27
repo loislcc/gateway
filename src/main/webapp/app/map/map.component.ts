@@ -13,7 +13,24 @@ export class MapComponent implements OnInit {
     constructor(private trackerService: TrackerService) {}
 
     ngOnInit() {
+        const tileConfig = {
+            tiles_ext: '.png', // 瓦片图的后缀 ------ 根据需要修改，一般是 .png .jpg
+            tiles_dir: '../../content/lib/maptile', // 瓦片图的目录，为空默认在 baidumap_v2/tiles/ 目录
+            home: ''
+        };
+
+        // 改写 API中的 getTilesUrl 方法,采用本地的瓦片图来渲染
+        const tileLayer = new BMap.TileLayer({
+            isTransparentPng: true
+        });
+        tileLayer.getTilesUrl = function(tileCoord, zoom) {
+            const x = tileCoord.x;
+            const y = tileCoord.y;
+            return tileConfig.tiles_dir + '/' + zoom + '/' + x + '/' + y + tileConfig.tiles_ext;
+        };
+
         const map = new BMap.Map('map');
+        map.addTileLayer(tileLayer);
         map.centerAndZoom(new BMap.Point(116.417854, 39.921988), 15);
         map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
         this.data_info = [[116.417854, 39.921988, '10.4.10.10'], [116.406605, 39.921585, '涵洞']];
@@ -116,5 +133,10 @@ export class MapComponent implements OnInit {
             const infoWindow = new BMap.InfoWindow(content, opts); // 创建信息窗口对象
             map.openInfoWindow(infoWindow, point); // 开启信息窗口
         }
+
+        let cr = new BMap.CopyrightControl(); // 设置版权控件位置
+        map.addControl(cr); // 添加版权控件
+        let bs = map.getBounds(); // 返回地图可视区域
+        cr.addCopyright({ id: 1, content: "<a href='#' style='font-size:20px;background:yellow'>离线地图API V2.0 </a>", bounds: bs });
     }
 }
