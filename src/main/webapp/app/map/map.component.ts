@@ -31,9 +31,10 @@ export class MapComponent implements OnInit {
 
         const map = new BMap.Map('map');
         map.addTileLayer(tileLayer);
-        map.centerAndZoom(new BMap.Point(116.417854, 39.921988), 15);
+        map.centerAndZoom(new BMap.Point(120.201929, 30.275255), 15);
         map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
-        this.data_info = [[116.417854, 39.921988, '10.4.10.10'], [116.406605, 39.921585, '涵洞']];
+        this.data_info = [[120.187564, 30.262842, '10.4.10.10'], [120.197122, 30.266367, '涵洞']];
+
         const opts = {
             width: 250, // 信息窗口宽度
             height: 150, // 信息窗口高度

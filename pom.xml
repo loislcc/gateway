@@ -383,6 +383,11 @@
             <artifactId>spring-security-messaging</artifactId>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
+<!--        <dependency>-->
+<!--            <groupId>com.xiaomi.infra</groupId>-->
+<!--            <artifactId>java-erasure</artifactId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>
