@@ -17,6 +17,14 @@
                 </a>
             </li>
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="/data" (click)="collapseNavbar()">
+                    <span>
+                        <fa-icon icon="tasks"></fa-icon>
+                        <span>Data</span>
+                    </span>
+                </a>
+            </li>
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/map" (click)="collapseNavbar()">
                     <span>
                         <fa-icon icon="tasks"></fa-icon>

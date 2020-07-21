@@ -18,9 +18,31 @@ import { GatewayHomeModule } from './home/home.module';
 import { GatewayAccountModule } from './account/account.module';
 import { GatewayEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
+import { PanelMenuModule } from 'primeng/components/panelmenu/panelmenu';
+import {
+    ChartModule,
+    DialogModule,
+    DropdownModule,
+    GrowlModule,
+    InputTextModule,
+    MessageService,
+    PickListModule,
+    StepsModule,
+    TabMenuModule,
+    TabViewModule,
+    ToolbarModule,
+    CheckboxModule,
+    AccordionModule,
+    TreeModule,
+    ProgressBarModule,
+    ProgressSpinnerModule
+} from 'primeng/primeng';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
 import { MapComponent } from './map/map.component';
+import { DataComponent } from '../data/data.component';
 
 @NgModule({
     imports: [
@@ -37,9 +59,27 @@ import { MapComponent } from './map/map.component';
         GatewayAccountModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
         GatewayEntityModule,
-        GatewayAppRoutingModule
+        GatewayAppRoutingModule,
+        ChartModule,
+        DialogModule,
+        DropdownModule,
+        GrowlModule,
+        InputTextModule,
+        PickListModule,
+        StepsModule,
+        TabMenuModule,
+        TabViewModule,
+        ToolbarModule,
+        CheckboxModule,
+        AccordionModule,
+        TreeModule,
+        ProgressBarModule,
+        ProgressSpinnerModule,
+        PanelMenuModule,
+        TableModule,
+        ButtonModule
     ],
-    declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, MapComponent],
+    declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, MapComponent, DataComponent],
     providers: [
         {
             provide: HTTP_INTERCEPTORS,
@@ -60,7 +100,8 @@ import { MapComponent } from './map/map.component';
             provide: HTTP_INTERCEPTORS,
             useClass: NotificationInterceptor,
             multi: true
-        }
+        },
+        MessageService
     ],
     bootstrap: [JhiMainComponent]
 })

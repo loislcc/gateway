@@ -1,0 +1,57 @@
+
+<div>
+    <p-table #dtf  [columns]="cols" [value]="datas" [responsive]="true" [paginator]="true" [rows]="rows" [paginator]="true" [pageLinks]="3" [(selection)]="selectedControllers"
+             [lazy]="true" (onLazyLoad)="loadLazy($event)" [totalRecords]="totalCount" [loading]="loadingData" [resizableColumns]="true" dataKey="id">
+        <ng-template pTemplate="caption">
+            <div class="ui-helper-clearfix">
+                <div style="float:left">
+                    <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="刷新" (click)="refresh()" ></button>
+                    <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="增加" (click)="addContr()" ></button>
+                    <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="删除" (click)="deleteController()" ></button>
+                    <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="启动连接"  (click)="startConnect()"></button>
+                    <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="关闭连接" (click)="stopConnect()" ></button>
+                </div>
+                <div  style="float:right">
+                    <i class="fa fa-search" style="margin:4px 4px 0 0; "></i>
+                    <input type="text" pInputText size="50" placeholder="搜索" (input)="dtf.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                    <!--<button type="button" pButton icon="fa fa-file" iconPos="left" label="清除筛选条件"  style="float:right" (click)="clear()"></button>-->
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th style="width: 3.25em">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th *ngFor="let col of columns" pResizableColumn>
+                    {{col.header}}
+                </th>
+                <!--<th>-->
+                <!--操作-->
+                <!--</th>-->
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr [pSelectableRow]="rowData">
+                <td>
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </td>
+                <td *ngFor="let col of columns" class="ui-resizable-column">
+                    <span class="ui-column-title">{{col.header}}</span>
+                    {{rowData[col.field]}}
+                </td>
+                <!--<td>-->
+                <!--<div class="ui-toolbar-group-right">-->
+                <!--<button pButton type="button" icon="pi pi-search"></button>-->
+                <!--<button pButton type="button" icon="pi pi-calendar" class="ui-button-success"></button>-->
+                <!--<button pButton type="button" icon="pi pi-times" class="ui-button-danger"></button>-->
+                <!--</div>-->
+                <!--</td>-->
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            共有 {{totalCount}} 控制器.
+        </ng-template>
+    </p-table>
+</div>
+
