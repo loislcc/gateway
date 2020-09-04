@@ -134,7 +134,7 @@ export class MapComponent implements OnInit {
                     '<div style="margin:0;line-height:20px;padding:2px;">' +
                     '<img src = "../../content/images/access.png" alt = "" style = "float: right; zoom:1; overflow: hidden; width: 100px; height: 100px; margin-left: 3px;"/>' +
                     '识别类别：' +
-                    data.type +
+                    data.category +
                     '<br/> 名称：' +
                     data.name +
                     '<br/> 级别：' +
