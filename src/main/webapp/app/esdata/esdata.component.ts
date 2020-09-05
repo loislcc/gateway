@@ -8,11 +8,11 @@ import { ROW_NUM } from 'app/app.constants';
 declare var BMap: any;
 
 @Component({
-    selector: 'jhi-map',
-    templateUrl: './data.component.html',
+    selector: 'jhi-esdata',
+    templateUrl: './esdata.component.html',
     styles: []
 })
-export class DataComponent implements OnInit {
+export class EsdataComponent implements OnInit {
     currentAccount: any;
 
     cols: any[];

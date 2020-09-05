@@ -1,11 +1,11 @@
 import { Route, Routes } from '@angular/router';
 
-import { DataComponent } from './data.component';
+import { EsdataComponent } from './esdata.component';
 
-export const mapRoutes: Routes = [
+export const EsdataRoutes: Routes = [
     {
         path: 'data',
-        component: DataComponent,
+        component: EsdataComponent,
         data: {
             pageTitle: '数据视图'
         }

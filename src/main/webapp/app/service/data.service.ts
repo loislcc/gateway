@@ -20,4 +20,8 @@ export class DataService {
         const options = createRequestOption(req);
         return this.http.get<any[]>(this.resourceUrlgdata, { params: options, observe: 'response' });
     }
+
+    deleteIDList(idList: number[]): Observable<HttpResponse<any>> {
+        return this.http.post(`${this.resourceUrlgdata}` + '/delete', idList, { observe: 'response' });
+    }
 }

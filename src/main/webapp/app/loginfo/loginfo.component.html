@@ -1,15 +1,12 @@
 
 <div>
-    <p-table #dtf  [columns]="cols" [value]="datas" [responsive]="true" [paginator]="true" [rows]="rows" [paginator]="true" [pageLinks]="3" [(selection)]="selectedControllers"
+    <p-table #dtf  [columns]="cols" [value]="datas" [responsive]="true"  [rows]="rows" [paginator]="true" [pageLinks]="3" [(selection)]="selectedInfo"
              [lazy]="true" (onLazyLoad)="loadLazy($event)" [totalRecords]="totalCount" [loading]="loadingData" [resizableColumns]="true" dataKey="id">
         <ng-template pTemplate="caption">
             <div class="ui-helper-clearfix">
                 <div style="float:left">
                     <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="刷新" (click)="refresh()" ></button>
-                    <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="增加" (click)="addContr()" ></button>
                     <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="删除" (click)="deleteController()" ></button>
-                    <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="启动连接"  (click)="startConnect()"></button>
-                    <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="关闭连接" (click)="stopConnect()" ></button>
                 </div>
                 <div  style="float:right">
                     <i class="fa fa-search" style="margin:4px 4px 0 0; "></i>
@@ -50,7 +47,7 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">
-            共有 {{totalCount}} 控制器.
+            共有 {{totalCount}} 信息.
         </ng-template>
     </p-table>
 </div>

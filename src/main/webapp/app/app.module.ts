@@ -35,14 +35,18 @@ import {
     AccordionModule,
     TreeModule,
     ProgressBarModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    DialogService
 } from 'primeng/primeng';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
 import { MapComponent } from './map/map.component';
-import { DataComponent } from '../data/data.component';
+import { EsdataComponent } from './esdata/esdata.component';
+import { LoginfoComponent } from 'app/loginfo/loginfo.component';
+import { ConfirmComponent } from 'app/shared/confirmDialog/confirm.component';
+import { ConfirmService } from 'app/shared/confirmDialog/confirm.service';
 
 @NgModule({
     imports: [
@@ -79,7 +83,17 @@ import { DataComponent } from '../data/data.component';
         TableModule,
         ButtonModule
     ],
-    declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, FooterComponent, MapComponent, DataComponent],
+    declarations: [
+        JhiMainComponent,
+        NavbarComponent,
+        ErrorComponent,
+        PageRibbonComponent,
+        FooterComponent,
+        MapComponent,
+        EsdataComponent,
+        LoginfoComponent,
+        ConfirmComponent
+    ],
     providers: [
         {
             provide: HTTP_INTERCEPTORS,
@@ -101,7 +115,9 @@ import { DataComponent } from '../data/data.component';
             useClass: NotificationInterceptor,
             multi: true
         },
-        MessageService
+        MessageService,
+        DialogService,
+        ConfirmService
     ],
     bootstrap: [JhiMainComponent]
 })
