@@ -1,7 +1,8 @@
 
 <div>
-    <p-table #dtf  [columns]="cols" [value]="datas" [responsive]="true"  [rows]="rows" [paginator]="true" [pageLinks]="3" [(selection)]="selectedInfo"
-             [lazy]="true" (onLazyLoad)="loadLazy($event)" [totalRecords]="totalCount" [loading]="loadingData" [resizableColumns]="true" dataKey="id">
+    <p-table #dt  [columns]="cols" [value]="datas" [responsive]="true"  [rows]="10" [paginator]="true" [pageLinks]="3" [(selection)]="selectedInfo"
+              [totalRecords]="totalCount" [loading]="loadingData"  [resizableColumns]="true" dataKey="id"
+             >
         <ng-template pTemplate="caption">
             <div class="ui-helper-clearfix">
                 <div style="float:left">
@@ -11,10 +12,22 @@
                 </div>
                 <div  style="float:right">
                     <i class="fa fa-search" style="margin:4px 4px 0 0; "></i>
-                    <input type="text" pInputText size="50" placeholder="搜索" (input)="dtf.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                    <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
                     <!--<button type="button" pButton icon="fa fa-file" iconPos="left" label="清除筛选条件"  style="float:right" (click)="clear()"></button>-->
                 </div>
             </div>
+        </ng-template>
+        <ng-template pTemplate="colgroup">
+            <colgroup>
+                <col >
+                <col >
+                <col >
+                <col >
+                <col >
+                <col >
+                <col >
+                <col style="width:20%">
+            </colgroup>
         </ng-template>
         <ng-template pTemplate="header" let-columns>
             <tr>
@@ -62,8 +75,8 @@
 
         <p-scrollPanel [style]="{width: '100%', height: '100vh'}">
         <div>
-            <p-table #dtf  [columns]="innercols" [value]="innerdatas" [responsive]="true"  [rows]="innerrows" [paginator]="true" [pageLinks]="3"
-                     [lazy]="true" (onLazyLoad)="loadinnerLazy($event)" [totalRecords]="totalinnerCount" [loading]="loadinginnerData" [resizableColumns]="true" dataKey="id">
+            <p-table #dtf  [columns]="innercols" [value]="innerdatas" [responsive]="true"  [rows]="10" [paginator]="true" [pageLinks]="3"
+                      [totalRecords]="totalinnerCount" [loading]="loadinginnerData" [resizableColumns]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="ui-helper-clearfix">
                         <div style="float:left">

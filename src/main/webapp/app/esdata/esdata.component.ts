@@ -20,14 +20,10 @@ export class EsdataComponent implements OnInit {
     cols: any[];
     datas: any[];
     rows: number;
-    param: any[];
-    innerparam: any[];
     loadingData: boolean;
     selectedInfo: any[];
     totalCount: number;
     status: any;
-    pageParam: any[];
-    innerpageParam: any[];
     showDialog: boolean;
 
     innercols: any[];
@@ -72,10 +68,10 @@ export class EsdataComponent implements OnInit {
         this.loadingData = false;
         this.datas = [
             { name: 'test', type: '手动', startime: '111', endtime: '222', realtime: '333', status: 'finish' },
-            { name: 'test', type: '手动', startime: '111', endtime: '222', realtime: '333', status: 'running' },
-            { name: 'test', type: '手动', startime: '111', endtime: '222', realtime: '333', status: 'pause' }
+            { name: 'est', type: '手动', startime: '111', endtime: '222', realtime: '333', status: 'running' },
+            { name: 'st', type: '手动', startime: '111', endtime: '222', realtime: '333', status: 'pause' }
         ];
-        // this.loadData();
+        this.getData();
     }
 
     showDetail(task) {
@@ -208,42 +204,6 @@ export class EsdataComponent implements OnInit {
             } else {
             }
         });
-    }
-
-    loadLazy(event: LazyLoadEvent): void {
-        this.param = [];
-        this.pageParam = [];
-        if (event.filters.global) {
-            const filterValue = event.filters.global.value;
-            if (filterValue !== '') {
-                for (let i = 0; i < this.cols.length; i++) {
-                    this.param.push([this.cols[i].field + '.contains', filterValue]);
-                    this.pageParam.push([this.cols[i].field + '.contains', filterValue]);
-                }
-            }
-        }
-        const page = +event.first / +event.rows;
-        this.pageParam.push(['page', page]);
-        this.pageParam.push(['size', event.rows]);
-        this.getData();
-    }
-
-    loadinnerLazy(event: LazyLoadEvent): void {
-        this.innerparam = [];
-        this.innerpageParam = [];
-        if (event.filters.global) {
-            const filterValue = event.filters.global.value;
-            if (filterValue !== '') {
-                for (let i = 0; i < this.cols.length; i++) {
-                    this.innerparam.push([this.cols[i].field + '.contains', filterValue]);
-                    this.innerpageParam.push([this.cols[i].field + '.contains', filterValue]);
-                }
-            }
-        }
-        const page = +event.first / +event.rows;
-        this.innerpageParam.push(['page', page]);
-        this.innerpageParam.push(['size', event.rows]);
-        this.getData();
     }
 
     getData(): void {
