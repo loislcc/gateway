@@ -1,1 +1,128 @@
 
+<div>
+    <p-table #dtf  [columns]="cols" [value]="datas" [responsive]="true"  [rows]="rows" [paginator]="true" [pageLinks]="3" [(selection)]="selectedInfo"
+             [lazy]="true" (onLazyLoad)="loadLazy($event)" [totalRecords]="totalCount" [loading]="loadingData" [resizableColumns]="true" dataKey="id">
+        <ng-template pTemplate="caption">
+            <div class="ui-helper-clearfix">
+                <div style="float:left">
+                    <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="增加任务" (click)="addTask()"></button>
+                    <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="刷新" (click)="refresh()" ></button>
+                    <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="删除任务" (click)="deleteTask()" ></button>
+                </div>
+                <div  style="float:right">
+                    <i class="fa fa-search" style="margin:4px 4px 0 0; "></i>
+                    <input type="text" pInputText size="50" placeholder="搜索" (input)="dtf.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                    <!--<button type="button" pButton icon="fa fa-file" iconPos="left" label="清除筛选条件"  style="float:right" (click)="clear()"></button>-->
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th style="width: 3.25em">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th *ngFor="let col of columns" pResizableColumn>
+                    {{col.header}}
+                </th>
+                <th>
+                操作
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr [pSelectableRow]="rowData">
+                <td>
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </td>
+                <td *ngFor="let col of columns" class="ui-resizable-column">
+                    <span class="ui-column-title">{{col.header}}</span>
+                    {{rowData[col.field]}}
+                </td>
+                <td class="ui-resizable-column">
+                <div class="ui-toolbar-group-right">
+                <button pButton type="button"  icon="pi pi-eye" label="查看" (click)=showDetail(rowData)></button>
+                <button *ngIf="rowData.status == 'running'" pButton type="button" icon="pi pi-bell" class="ui-button-success" label= "暂停"></button>
+                <button *ngIf="rowData.status == 'pause'" pButton type="button" icon="pi pi-file" class="ui-button-secondary" label= "重启"></button>
+                <button *ngIf="rowData.status != 'finish'" pButton type="button" icon="pi pi-bookmark" class="ui-button-warning" label= "终止"></button>
+                <button *ngIf="rowData.status == 'finish'" pButton type="button" icon="pi pi-times" class="ui-button-danger" label="删除" (click)= deleteTask() ></button>
+                </div>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            共有 {{totalCount}} 信息.
+        </ng-template>
+    </p-table>
+</div>
+
+
+
+<p-dialog header="分布详细信息" [(visible)]="showDialog"  [style]="{width: '50vw', height: '100vh'}" [maximizable]="true" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false">
+
+        <p-scrollPanel [style]="{width: '100%', height: '100vh'}">
+        <div>
+            <p-table #dtf  [columns]="innercols" [value]="innerdatas" [responsive]="true"  [rows]="innerrows" [paginator]="true" [pageLinks]="3"
+                     [lazy]="true" (onLazyLoad)="loadinnerLazy($event)" [totalRecords]="totalinnerCount" [loading]="loadinginnerData" [resizableColumns]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="ui-helper-clearfix">
+                        <div style="float:left">
+                            <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="复原" ></button>
+                        </div>
+                        <div  style="float:right">
+                            <i class="fa fa-search" style="margin:4px 4px 0 0; "></i>
+                            <input type="text" pInputText size="50" placeholder="搜索" (input)="dtf.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                            <!--<button type="button" pButton icon="fa fa-file" iconPos="left" label="清除筛选条件"  style="float:right" (click)="clear()"></button>-->
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th style="width: 3.25em">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th *ngFor="let col of columns" pResizableColumn>
+                            {{col.header}}
+                        </th>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <td>
+                            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                        </td>
+                        <td *ngFor="let col of columns" class="ui-resizable-column">
+                            <span class="ui-column-title">{{col.header}}</span>
+                            {{rowData[col.field]}}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    共有 {{totalinnerCount}} 信息.
+                </ng-template>
+            </p-table>
+        </div>
+
+        <div echarts [options]="regionOptions" id="treeSvg" ></div>
+        <div>
+            <p-button icon="pi pi-check" (click)="showDialog=false" label="Yes" class="p-button-text"></p-button>
+            <p-button icon="pi pi-times" (click)="showDialog=false" label="No"></p-button>
+        </div>
+
+        </p-scrollPanel>
+</p-dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

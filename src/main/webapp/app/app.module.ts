@@ -36,10 +36,13 @@ import {
     TreeModule,
     ProgressBarModule,
     ProgressSpinnerModule,
-    DialogService
+    DialogService,
+    ScrollPanelModule
 } from 'primeng/primeng';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent, ErrorComponent } from './layouts';
 import { MapComponent } from './map/map.component';
@@ -47,6 +50,8 @@ import { EsdataComponent } from './esdata/esdata.component';
 import { LoginfoComponent } from 'app/loginfo/loginfo.component';
 import { ConfirmComponent } from 'app/shared/confirmDialog/confirm.component';
 import { ConfirmService } from 'app/shared/confirmDialog/confirm.service';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
     imports: [
@@ -81,7 +86,12 @@ import { ConfirmService } from 'app/shared/confirmDialog/confirm.service';
         ProgressSpinnerModule,
         PanelMenuModule,
         TableModule,
-        ButtonModule
+        ButtonModule,
+        DynamicDialogModule,
+        BrowserAnimationsModule,
+        NoopAnimationsModule,
+        NgxEchartsModule,
+        ScrollPanelModule
     ],
     declarations: [
         JhiMainComponent,
