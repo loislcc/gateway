@@ -9,3 +9,5 @@ export const BUILD_TIMESTAMP = process.env.BUILD_TIMESTAMP;
 export const SERVICE_GDATA = 'gdata';
 
 export const ROW_NUM = 10;
+
+export const ConsoleInfo: string[] = ['Welcome to Console'];
