@@ -52,6 +52,7 @@ import { ConfirmComponent } from 'app/shared/confirmDialog/confirm.component';
 import { ConfirmService } from 'app/shared/confirmDialog/confirm.service';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { AddTaskComponent } from 'app/esdata/addTask.component';
 
 @NgModule({
     imports: [
@@ -102,7 +103,8 @@ import { NgxEchartsModule } from 'ngx-echarts';
         MapComponent,
         EsdataComponent,
         LoginfoComponent,
-        ConfirmComponent
+        ConfirmComponent,
+        AddTaskComponent
     ],
     providers: [
         {
