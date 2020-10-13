@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogService, LazyLoadEvent, MessageService } from 'primeng/api';
+import { DialogService, LazyLoadEvent, MessageService, SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
 import { ROW_NUM } from 'app/app.constants';
@@ -8,11 +8,13 @@ import { ConfirmService } from 'app/shared/confirmDialog/confirm.service';
 import * as echarts from 'echarts';
 import { AddTaskComponent } from 'app/esdata/addTask.component';
 import { Task } from 'app/data/Task.model';
+import { tmpTask } from 'app/data/tmpTask';
 
 @Component({
     selector: 'jhi-esdata',
     templateUrl: './esdata.component.html',
-    styles: []
+    styles: [],
+    providers: [MessageService]
 })
 export class EsdataComponent implements OnInit {
     cols: any[];
@@ -23,7 +25,7 @@ export class EsdataComponent implements OnInit {
     totalCount: number;
     status: any;
     showDialog: boolean;
-
+    addDialog: boolean;
     innercols: any[];
     innerdatas: any[];
     loadinginnerData: boolean;
@@ -32,6 +34,15 @@ export class EsdataComponent implements OnInit {
     regionOptions;
     treedata: any;
     task: Task;
+    addTmpTask: Task;
+    minDate: Date;
+    startTime: any;
+    endTime: any;
+    matrixOptions: SelectItem[];
+    matrix: any;
+    taskTypeOptions: SelectItem[];
+    taskType: any;
+    ifcycle: boolean;
 
     constructor(
         // private principal: Principal,
@@ -50,6 +61,9 @@ export class EsdataComponent implements OnInit {
             { field: 'type', header: '类型' },
             { field: 'startime', header: '目标开始时间' },
             { field: 'endtime', header: '目标结束时间' },
+            { field: 'datanum', header: '数据块数' },
+            { field: 'checknum', header: '校验块数' },
+            { field: 'matrix', header: '编码矩阵' },
             { field: 'realtime', header: '操作时间' },
             { field: 'status', header: '状态' }
         ];
@@ -61,9 +75,13 @@ export class EsdataComponent implements OnInit {
             { field: 'date', header: '操作时间' },
             { field: 'pname', header: '父文件名称' }
         ];
+        this.matrixOptions = [{ label: '范德蒙矩阵', value: 'Vandermonde' }, { label: '柯西矩阵', value: 'Cauchy' }];
+        this.taskTypeOptions = [{ label: '手动', value: 'manual' }, { label: '自动', value: 'cycle' }];
         this.rows = ROW_NUM;
         this.showDialog = false;
+        this.addDialog = false;
         this.loadingData = false;
+        this.ifcycle = false;
         this.getData();
     }
 
@@ -82,23 +100,12 @@ export class EsdataComponent implements OnInit {
         });
     }
     addTask() {
-        // this.display = true;
-        const ref = this.dialogService.open(AddTaskComponent, {
-            header: '新增控制器',
-            width: '600px',
-            // height: '700px',
-            data: {
-                contr: null
-            }
-            // contentStyle: {'max-height': '1000px', 'overflow': 'auto'}
-        });
-
-        ref.onClose.subscribe((tsk: Task) => {
-            if (tsk) {
-                this.getData();
-                console.log(tsk);
-            }
-        });
+        this.addDialog = true;
+        this.addTmpTask = new Task();
+        this.startTime = '';
+        this.endTime = '';
+        this.taskType = '';
+        this.matrix = '';
     }
 
     onSuccess() {
@@ -180,19 +187,19 @@ export class EsdataComponent implements OnInit {
                     }
                     // const data = o.data;
                     // var res = data.alarmName;
-                    // if (data.nodeName != "")
-                    //     res += "<br>" + data.nodeName;
-                    // if (data.portName != "")
-                    //     res += "<br>" + data.portName;
-                    // if (data.arriveTime != "")
-                    //     res += "<br>" + data.arriveTime;
+                    // if (data.nodeName != '')
+                    //     res += '<br>' + data.nodeName;
+                    // if (data.portName != '')
+                    //     res += '<br>' + data.portName;
+                    // if (data.arriveTime != '')
+                    //     res += '<br>' + data.arriveTime;
                     return o.data.name;
                 }
             }
         };
 
-        // chart.on("contextmenu", function (params) {
-        //     var dataSource = $("#dataSource").val();
+        // chart.on('contextmenu', function (params) {
+        //     var dataSource = $('#dataSource').val();
         //     if (params.data.id == -1)
         //         return;
         //     if (params.componentType === 'series') {
@@ -212,10 +219,10 @@ export class EsdataComponent implements OnInit {
                 this.selectedInfo.forEach(c => {
                     idList.push(c.id);
                 });
-                this.dataService.deleteIDList(idList).subscribe(res => {
+                this.dataService.deleteTaskIDList(idList).subscribe(res => {
                     if (res.status === 201 || res.status === 200) {
                         this.messageService.add({ severity: 'success', summary: '信息删除成功', detail: '' });
-                        // this.loadData();
+                        this.refresh();
                         this.datas = this.datas.filter(c => this.selectedInfo.indexOf(c) === -1);
                         this.selectedInfo = [];
                         return;
@@ -317,5 +324,60 @@ export class EsdataComponent implements OnInit {
         });
         this.treedata = { name: root, children: rootchildren, type: 'root' };
         console.log(this.treedata);
+    }
+    changeType() {
+        this.ifcycle = this.taskType === 'cycle';
+    }
+
+    save() {
+        // console.log(this.startTime);
+        // console.log(this.endTime);
+        if (this.startTime === undefined || this.endTime === undefined || this.startTime === '' || this.endTime === '') {
+            this.messageService.add({ severity: 'error', summary: '请选择起止时间', detail: '' });
+            return;
+        }
+        if (this.addTmpTask.name === undefined || this.addTmpTask.name === '') {
+            this.messageService.add({ severity: 'error', summary: '请输入任务名称', detail: '' });
+            return;
+        }
+        if (this.addTmpTask.datanum === undefined || this.addTmpTask.datanum === '') {
+            this.messageService.add({ severity: 'error', summary: '请选择数据块数量', detail: '' });
+            return;
+        }
+        if (this.addTmpTask.checknum === undefined || this.addTmpTask.checknum === '') {
+            this.messageService.add({ severity: 'error', summary: '请选择校验块数量', detail: '' });
+            return;
+        }
+        if (this.matrix === undefined || this.matrix === '') {
+            this.messageService.add({ severity: 'error', summary: '请选择编码矩阵', detail: '' });
+            return;
+        }
+        if (this.taskType === undefined || this.taskType === '') {
+            this.messageService.add({ severity: 'error', summary: '请选择任务类型', detail: '' });
+            return;
+        }
+        if (this.ifcycle) {
+            if (this.addTmpTask.cycle === undefined || this.addTmpTask.cycle === '') {
+                this.messageService.add({ severity: 'error', summary: '请输入任务周期', detail: '' });
+                return;
+            }
+        }
+        this.addTmpTask.startime = this.startTime;
+        this.addTmpTask.endtime = this.endTime;
+        this.addTmpTask.matrix = this.matrix;
+        this.addTmpTask.type = this.taskType;
+        console.log(this.addTmpTask);
+        this.dataService.addTaskinfo(this.addTmpTask).subscribe(
+            res => {
+                this.addDialog = false;
+                this.messageService.add({ severity: 'success', summary: '新增备份任务成功', detail: '' });
+                this.refresh();
+            },
+            error3 => {
+                console.log('error');
+                this.messageService.add({ severity: 'error', summary: '新增备份任务失败', detail: error3.error });
+                // this.refresh();
+            }
+        );
     }
 }

@@ -1,10 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="ui-dialog-content">
+    <form [formGroup]="formGroup">
+        <div class="p-grid">
+            <div class="p-col-fixed" style="width:100px">
+                <div class="box">
+                <span>
+                    起始时间
+                </span>
+                </div>
+            </div>
+            <div class="p-col">
+                <div class="box" >
+                    <p-calendar [showTime]="true" [minDate]="minDate" id="start-time"  dateFormat="yy-mm-dd" [readonlyInput]="true"  [formControl]="startime"></p-calendar>
+<!--                    <input type="text" pInputText placeholder="name"  style="width:85%" [formControl]="name"></div>-->
 
-</body>
-</html>
+            </div>
+        </div>
+        <div class="p-grid">
+            <div class="p-col-fixed" style="width:100px">
+                <div class="box">
+                <span>
+                    结束时间
+                </span>
+                </div>
+            </div>
+            <div class="p-col">
+                <div class="box" >
+                    <p-calendar [showTime]="true" [minDate]="minDate" id="end-time"  dateFormat="yy-mm-dd" [readonlyInput]="true"  [formControl]="endtime"></p-calendar>
+
+<!--                    <input type="text" pInputText placeholder="name"  style="width:85%" readonly="true" [formControl]="login"></div>-->
+            </div>
+        </div>
+        <div class="p-grid">
+            <div class="p-col-fixed" style="width:100px">
+                <div class="box">
+                <span>
+                    数据块数
+                </span>
+                </div>
+            </div>
+            <div class="p-col">
+                <div class="box" >
+                    <input type="text" pInputText placeholder="phone number"  style="width:85%" [formControl]="datanum">
+                </div>
+            </div>
+        </div>
+        <div class="p-grid">
+            <div class="p-col-fixed" style="width:100px">
+                <div class="box">
+                <span>
+                    校验块数
+                </span>
+                </div>
+            </div>
+            <div class="p-col">
+                <div class="box" >
+                    <input type="text" pInputText placeholder="organization"  style="width:85%" [formControl]="checknum">
+                </div>
+            </div>
+        </div>
+        <div class="p-grid">
+            <div class="p-col-fixed" style="width:100px">
+                <div class="box">
+                <span>
+                    编码矩阵
+                </span>
+                </div>
+            </div>
+            <div class="p-col">
+                <div class="box" >
+                    <input type="text" pInputText placeholder="matrix"  style="width:85%" [formControl] = "matrix">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="ui-dialog-footer">
+    <button type="button" pButton icon="pi pi-check" (click)="save()" label="是" [disabled]="formGroup.invalid"></button>
+    <button type="button" pButton icon="pi pi-close" (click)="closeDialog()" label="关闭" class="ui-button-secondary"></button>
+</div>

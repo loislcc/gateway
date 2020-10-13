@@ -47,4 +47,7 @@ export class DataService {
     deleteIDList(idList: number[]): Observable<HttpResponse<any>> {
         return this.http.post(`${this.resourceUrlgdata}` + '/delete', idList, { observe: 'response' });
     }
+    deleteTaskIDList(idList: number[]): Observable<HttpResponse<any>> {
+        return this.http.post(`${this.resourceUrlTask}` + '/delete', idList, { observe: 'response' });
+    }
 }

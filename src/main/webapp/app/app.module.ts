@@ -37,7 +37,9 @@ import {
     ProgressBarModule,
     ProgressSpinnerModule,
     DialogService,
-    ScrollPanelModule
+    ScrollPanelModule,
+    CalendarModule,
+    AutoCompleteModule
 } from 'primeng/primeng';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -53,6 +55,8 @@ import { ConfirmService } from 'app/shared/confirmDialog/confirm.service';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { AddTaskComponent } from 'app/esdata/addTask.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
     imports: [
@@ -92,7 +96,11 @@ import { AddTaskComponent } from 'app/esdata/addTask.component';
         BrowserAnimationsModule,
         NoopAnimationsModule,
         NgxEchartsModule,
-        ScrollPanelModule
+        ScrollPanelModule,
+        ReactiveFormsModule,
+        CalendarModule,
+        AutoCompleteModule,
+        ToastModule
     ],
     declarations: [
         JhiMainComponent,
@@ -106,6 +114,7 @@ import { AddTaskComponent } from 'app/esdata/addTask.component';
         ConfirmComponent,
         AddTaskComponent
     ],
+    entryComponents: [ConfirmComponent],
     providers: [
         {
             provide: HTTP_INTERCEPTORS,

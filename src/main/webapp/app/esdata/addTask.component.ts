@@ -6,6 +6,7 @@ import { ROW_NUM } from 'app/app.constants';
 import { DataService } from 'app/service/data.service';
 import { ConfirmService } from 'app/shared/confirmDialog/confirm.service';
 import * as echarts from 'echarts';
+import { FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'jhi-addTask',
@@ -13,6 +14,24 @@ import * as echarts from 'echarts';
     styles: []
 })
 export class AddTaskComponent implements OnInit {
+    formGroup: FormGroup;
+    minDate: Date;
+    // endminDate:
+    get startime() {
+        return this.formGroup.get('startime');
+    }
+    get endtime() {
+        return this.formGroup.get('endtime');
+    }
+    get datanum() {
+        return this.formGroup.get('datanum');
+    }
+    get checknum() {
+        return this.formGroup.get('checknum');
+    }
+    get matrix() {
+        return this.formGroup.get('matrix');
+    }
     constructor(
         // private principal: Principal,
 
@@ -25,7 +44,9 @@ export class AddTaskComponent implements OnInit {
         public ref: DynamicDialogRef
     ) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.minDate = new Date();
+    }
 
     addContr(tsk) {
         this.dataService.addTaskinfo(tsk).subscribe(res => {
@@ -36,5 +57,11 @@ export class AddTaskComponent implements OnInit {
             }
             this.messageService.add({ severity: 'error', summary: '控制器添加失败', detail: '' });
         });
+    }
+    save() {
+        this.ref.close(this.formGroup.value);
+    }
+    closeDialog() {
+        this.ref.close();
     }
 }

@@ -26,6 +26,9 @@
                 <col >
                 <col >
                 <col >
+                <col >
+                <col >
+                <col >
                 <col style="width:20%">
             </colgroup>
         </ng-template>
@@ -126,6 +129,70 @@
         </p-scrollPanel>
 </p-dialog>
 
+<p-dialog header="添加备份任务" [(visible)]="addDialog" [responsive]="true" showEffect="fade" [modal]="false" [style]="{width: '700px'}"
+          [contentStyle]="{'overflow':'visible'}" >
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="addTmpTask">
+
+        <div class="ui-grid-row" >
+            <div class="ui-grid-col-2"><label>任务名称</label></div>
+            <div class="ui-grid-col-10">
+                <input pInputText id="name" [(ngModel)]="addTmpTask.name"/>
+            </div>
+        </div>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="start-time">开始时间</label></div>
+            <div class="ui-grid-col-8">
+                <p-calendar [showTime]="true" [minDate]="minDate" id="start-time" [(ngModel)]="startTime" dateFormat="yy-mm-dd" [readonlyInput]="true" ></p-calendar>
+            </div>
+            <div class="ui-grid-col-4"><label for="end-time">结束时间</label></div>
+            <div class="ui-grid-col-8">
+                <p-calendar [showTime]="true" [minDate]="minDate" id="end-time" [(ngModel)]="endTime" dateFormat="yy-mm-dd" [readonlyInput]="true" ></p-calendar>
+            </div>
+        </div>
+
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label>数据块数</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="datanum" [(ngModel)]="addTmpTask.datanum"/></div>
+
+
+            <div class="ui-grid-col-4"><label>校验块数</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="threshholdset" [(ngModel)]="addTmpTask.checknum"/></div>
+
+        </div>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-2"><label>编码矩阵</label></div>
+            <div class="ui-grid-col-10">
+                <p-dropdown [options]="matrixOptions" [(ngModel)]="matrix" placeholder="请选择编码矩阵"
+                            [autoWidth]="false" id="matrix" ></p-dropdown>
+            </div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-2"><label>任务类型</label></div>
+            <div class="ui-grid-col-10">
+                <p-dropdown [options]="taskTypeOptions" [(ngModel)]="taskType" placeholder="请选择任务类型"
+                            [autoWidth]="false" id="taskType" (onChange)="changeType()"></p-dropdown>
+            </div>
+        </div>
+        <div class="ui-grid-row" *ngIf="ifcycle">
+            <div class="ui-grid-col-2"><label>任务周期(天)</label></div>
+            <div class="ui-grid-col-10">
+                <input pInputText id="cycle" [(ngModel)]="addTmpTask.cycle"/>
+            </div>
+        </div>
+
+
+
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-check" (click)="save()" label="保存"></button>
+        </div>
+    </p-footer>
+
+</p-dialog>
 
 
 

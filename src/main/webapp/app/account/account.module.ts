@@ -13,6 +13,7 @@ import {
     SettingsComponent,
     accountState
 } from './';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
     imports: [GatewaySharedModule, RouterModule.forChild(accountState)],
@@ -25,6 +26,7 @@ import {
         PasswordResetFinishComponent,
         SettingsComponent
     ],
+    providers: [MessageService],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class GatewayAccountModule {}
