@@ -9,7 +9,7 @@ import * as echarts from 'echarts';
 import { FormGroup } from '@angular/forms';
 
 @Component({
-    selector: 'jhi-addTask',
+    selector: 'jhi-addtask',
     templateUrl: './addTask.component.html',
     styles: []
 })

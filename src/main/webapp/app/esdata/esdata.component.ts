@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogService, LazyLoadEvent, MessageService, SelectItem } from 'primeng/api';
+import { DialogService, LazyLoadEvent, SelectItem } from 'primeng/api';
+import { Message } from 'primeng/components/common/api';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
 import { ROW_NUM } from 'app/app.constants';
@@ -13,7 +15,6 @@ import { tmpTask } from 'app/data/tmpTask';
 @Component({
     selector: 'jhi-esdata',
     templateUrl: './esdata.component.html',
-    styles: [],
     providers: [MessageService]
 })
 export class EsdataComponent implements OnInit {
@@ -43,6 +44,7 @@ export class EsdataComponent implements OnInit {
     taskTypeOptions: SelectItem[];
     taskType: any;
     ifcycle: boolean;
+    msgs: Message[] = [];
 
     constructor(
         // private principal: Principal,
@@ -82,6 +84,7 @@ export class EsdataComponent implements OnInit {
         this.addDialog = false;
         this.loadingData = false;
         this.ifcycle = false;
+        this.minDate = new Date();
         this.getData();
     }
 
@@ -210,7 +213,7 @@ export class EsdataComponent implements OnInit {
 
     deleteTask() {
         if (this.selectedInfo === undefined) {
-            this.messageService.add({ severity: 'info', summary: '请选择需要删除的信息' });
+            this.messageService.add({ severity: 'info', summary: '请选择需要删除的信息', detail: '' });
             return;
         }
         this.confirmationService.confirm('删除信息').then(confirem => {
@@ -219,16 +222,20 @@ export class EsdataComponent implements OnInit {
                 this.selectedInfo.forEach(c => {
                     idList.push(c.id);
                 });
-                this.dataService.deleteTaskIDList(idList).subscribe(res => {
-                    if (res.status === 201 || res.status === 200) {
-                        this.messageService.add({ severity: 'success', summary: '信息删除成功', detail: '' });
-                        this.refresh();
-                        this.datas = this.datas.filter(c => this.selectedInfo.indexOf(c) === -1);
-                        this.selectedInfo = [];
-                        return;
+                this.dataService.deleteTaskIDList(idList).subscribe(
+                    res => {
+                        if (res.status === 201 || res.status === 200) {
+                            this.messageService.add({ severity: 'success', summary: '信息删除成功', detail: '' });
+                            this.refresh();
+                            this.datas = this.datas.filter(c => this.selectedInfo.indexOf(c) === -1);
+                            this.selectedInfo = [];
+                            return;
+                        }
+                    },
+                    error1 => {
+                        this.messageService.add({ severity: 'error', summary: '信息删除失败', detail: '' });
                     }
-                    this.messageService.add({ severity: 'error', summary: '信息删除失败', detail: '' });
-                });
+                );
             } else {
             }
         });
@@ -366,6 +373,8 @@ export class EsdataComponent implements OnInit {
         this.addTmpTask.endtime = this.endTime;
         this.addTmpTask.matrix = this.matrix;
         this.addTmpTask.type = this.taskType;
+        this.addTmpTask.realtime = new Date().toString();
+        this.addTmpTask.status = 'running';
         console.log(this.addTmpTask);
         this.dataService.addTaskinfo(this.addTmpTask).subscribe(
             res => {

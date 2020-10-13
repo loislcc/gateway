@@ -12,13 +12,14 @@ declare var BMap: any;
     templateUrl: './home.component.html',
     styleUrls: ['home.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements AfterViewInit, OnInit {
     account: Account;
     modalRef: NgbModalRef;
     private items: MenuItem[];
     navClose = false;
     toggleDescTip = '点击关闭导航菜单';
     authenticationError: boolean;
+    msgs: Message[] = [];
 
     constructor(
         private accountService: AccountService,
@@ -43,6 +44,14 @@ export class HomeComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
+    }
+    ngAfterViewInit() {
+        // this.otnService.setSideNav(this.sideNav);
+
+        this.eventManager.subscribe('info', response => {
+            this.msgs = [];
+            this.msgs.push({ severity: 'info', summary: response.content });
+        });
     }
     initlogin() {
         this.loginService

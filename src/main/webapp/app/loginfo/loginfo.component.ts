@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TrackerService } from 'app/service/tracker.service';
-import { DialogService, LazyLoadEvent, MessageService } from 'primeng/api';
+import { DialogService, LazyLoadEvent } from 'primeng/api';
+import { Message } from 'primeng/components/common/api';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
 import { ROW_NUM } from 'app/app.constants';
@@ -12,7 +14,7 @@ declare var BMap: any;
 @Component({
     selector: 'jhi-loginfo',
     templateUrl: './loginfo.component.html',
-    styles: []
+    providers: [MessageService]
 })
 export class LoginfoComponent implements OnInit {
     currentAccount: any;
@@ -27,6 +29,7 @@ export class LoginfoComponent implements OnInit {
     pageParam: any[];
     loadingData: boolean;
     totalCount: number;
+    msgs: Message[] = [];
 
     constructor(
         // private principal: Principal,
@@ -65,7 +68,7 @@ export class LoginfoComponent implements OnInit {
     /* 删除信息 */
     deleteController() {
         if (this.selectedInfo === undefined) {
-            this.messageService.add({ severity: 'info', summary: '请选择需要删除的信息' });
+            this.messageService.add({ severity: 'info', summary: '请选择需要删除的信息', detail: '' });
             return;
         }
         this.confirmationService.confirm('删除信息').then(confirem => {
@@ -74,16 +77,20 @@ export class LoginfoComponent implements OnInit {
                 this.selectedInfo.forEach(c => {
                     idList.push(c.id);
                 });
-                this.dataService.deleteIDList(idList).subscribe(res => {
-                    if (res.status === 201 || res.status === 200) {
-                        this.messageService.add({ severity: 'success', summary: '信息删除成功', detail: '' });
-                        // this.loadData();
-                        this.datas = this.datas.filter(c => this.selectedInfo.indexOf(c) === -1);
-                        this.selectedInfo = [];
-                        return;
+                this.dataService.deleteIDList(idList).subscribe(
+                    res => {
+                        if (res.status === 201 || res.status === 200) {
+                            this.messageService.add({ severity: 'success', summary: '信息删除成功', detail: '' });
+                            // this.loadData();
+                            this.datas = this.datas.filter(c => this.selectedInfo.indexOf(c) === -1);
+                            this.selectedInfo = [];
+                            return;
+                        }
+                    },
+                    error1 => {
+                        this.messageService.add({ severity: 'error', summary: '信息删除失败', detail: '' });
                     }
-                    this.messageService.add({ severity: 'error', summary: '信息删除失败', detail: '' });
-                });
+                );
             } else {
             }
         });
