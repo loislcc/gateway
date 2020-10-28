@@ -84,7 +84,7 @@ export class ConsoletrackerService {
     subscribe() {
         this.connection.then(() => {
             this.subscriber = this.stompClient.subscribe('/topic/' + this.topic, data => {
-                this.listenerObserver.next(JSON.parse(data.body));
+                this.listenerObserver.next(data.body);
             });
         });
     }

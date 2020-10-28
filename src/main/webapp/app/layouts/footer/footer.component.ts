@@ -29,8 +29,8 @@ export class FooterComponent implements OnInit, OnDestroy {
         this.trackerService.connect();
         this.trackerService.subscribe();
         this.trackerService.receive().subscribe(data => {
-            console.log(data.brief);
-            const tmp = new Date() + ': ' + data.brief;
+            console.log(data);
+            const tmp = new Date() + ': ' + data;
             ConsoleInfo.push(tmp);
             this.addData(tmp);
         });

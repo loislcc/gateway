@@ -23,8 +23,8 @@ public class ToConsoleConsumer {
     }
 
     @StreamListener(ToConsoleChannel.CHANNEL)
-    public void listen(TargetNotification msg) {
-        log.debug("listen Notification from edge to console: {}", msg.getCategory());
+    public void listen(String msg) {
+        log.debug("listen Notification from edge to console: {}", msg);
         messagingTemplate.convertAndSend("/topic/console", msg);
     }
 }
