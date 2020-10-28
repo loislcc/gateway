@@ -11,6 +11,7 @@ import * as echarts from 'echarts';
 import { AddTaskComponent } from 'app/esdata/addTask.component';
 import { Task } from 'app/data/Task.model';
 import { tmpTask } from 'app/data/tmpTask';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'jhi-esdata',
@@ -54,7 +55,8 @@ export class EsdataComponent implements OnInit {
         private eventManager: JhiEventManager,
         private messageService: MessageService,
         private dataService: DataService,
-        private confirmationService: ConfirmService
+        private confirmationService: ConfirmService,
+        private datePipe: DatePipe
     ) {}
 
     ngOnInit() {
@@ -337,8 +339,8 @@ export class EsdataComponent implements OnInit {
     }
 
     save() {
-        // console.log(this.startTime);
-        // console.log(this.endTime);
+        console.log(this.startTime);
+        console.log(this.endTime);
         if (this.startTime === undefined || this.endTime === undefined || this.startTime === '' || this.endTime === '') {
             this.messageService.add({ severity: 'error', summary: '请选择起止时间', detail: '' });
             return;
@@ -369,22 +371,30 @@ export class EsdataComponent implements OnInit {
                 return;
             }
         }
-        this.addTmpTask.startime = this.startTime;
-        this.addTmpTask.endtime = this.endTime;
+        this.addTmpTask.startime = this.datePipe.transform(this.startTime, 'yyyy-MM-dd');
+        this.addTmpTask.endtime = this.datePipe.transform(this.endTime, 'yyyy-MM-dd');
         this.addTmpTask.matrix = this.matrix;
         this.addTmpTask.type = this.taskType;
-        this.addTmpTask.realtime = new Date().toString();
+        this.addTmpTask.realtime = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss');
         this.addTmpTask.status = 'running';
         console.log(this.addTmpTask);
         this.dataService.addTaskinfo(this.addTmpTask).subscribe(
             res => {
                 this.addDialog = false;
-                this.messageService.add({ severity: 'success', summary: '新增备份任务成功', detail: '' });
-                this.refresh();
+                const msg: string =
+                    ' Add  Task [' + this.addTmpTask.name + '] From ' + this.addTmpTask.startime + ' To ' + this.addTmpTask.endtime;
+                this.dataService.sendMsg(msg).subscribe(d => {
+                    this.messageService.add({ severity: 'success', summary: '新增备份任务成功', detail: '' });
+                    this.refresh();
+                });
             },
             error3 => {
-                console.log('error');
-                this.messageService.add({ severity: 'error', summary: '新增备份任务失败', detail: error3.error });
+                // console.log('error');
+                const msg: string = ' Add  Task [' + this.addTmpTask.name + '] error ';
+                this.dataService.sendMsg(msg).subscribe(d => {
+                    this.messageService.add({ severity: 'error', summary: '新增备份任务失败', detail: error3.error });
+                });
+
                 // this.refresh();
             }
         );
