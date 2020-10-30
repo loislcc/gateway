@@ -392,7 +392,7 @@ export class EsdataComponent implements OnInit {
                 // console.log('error');
                 const msg: string = ' Add  Task [' + this.addTmpTask.name + '] error ';
                 this.dataService.sendMsg(msg).subscribe(d => {
-                    this.messageService.add({ severity: 'error', summary: '新增备份任务失败', detail: error3.error });
+                    this.messageService.add({ severity: 'error', summary: '新增备份任务失败', detail: error3.error.errorinfo });
                 });
 
                 // this.refresh();
