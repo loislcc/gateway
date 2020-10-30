@@ -58,9 +58,9 @@
                 <div class="ui-toolbar-group-right">
                 <button pButton type="button"  icon="pi pi-eye" label="查看" (click)=showDetail(rowData)></button>
                 <button *ngIf="rowData.status == 'running'" pButton type="button" icon="pi pi-bell" class="ui-button-success" label= "暂停"></button>
-                <button *ngIf="rowData.status == 'pause'" pButton type="button" icon="pi pi-file" class="ui-button-secondary" label= "重启"></button>
-                <button *ngIf="rowData.status != 'finish'" pButton type="button" icon="pi pi-bookmark" class="ui-button-warning" label= "终止"></button>
-                <button *ngIf="rowData.status == 'finish'" pButton type="button" icon="pi pi-times" class="ui-button-danger" label="删除" (click)= deleteTask() ></button>
+                <button *ngIf="rowData.status == 'pause' || rowData.status == 'fail'" pButton type="button" icon="pi pi-file" class="ui-button-secondary" label= "重启"></button>
+                <button *ngIf="rowData.status == 'running'" pButton type="button" icon="pi pi-bookmark" class="ui-button-warning" label= "终止"></button>
+                <button *ngIf="rowData.status == 'finish' || rowData.status == 'fail'" pButton type="button" icon="pi pi-times" class="ui-button-danger" label="删除" (click)= deleteTask() ></button>
                 </div>
                 </td>
             </tr>
