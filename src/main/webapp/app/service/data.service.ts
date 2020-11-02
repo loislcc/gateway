@@ -25,6 +25,10 @@ export class DataService {
         return this.http.post<any>(`${this.resourceUrlTask}/add`, tsk, { observe: 'response' });
     }
 
+    runTask(tsk: any): Observable<HttpResponse<any>> {
+        return this.http.post<any>(`${this.resourceUrlTask}/addrun`, tsk, { observe: 'response' });
+    }
+
     queryDatainfo(req?: any): Observable<HttpResponse<any[]>> {
         const options = createRequestOption(req);
         return this.http.get<any[]>(this.resourceUrlgdata, { params: options, observe: 'response' });

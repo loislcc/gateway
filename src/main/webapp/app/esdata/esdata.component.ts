@@ -387,6 +387,7 @@ export class EsdataComponent implements OnInit {
                     this.messageService.add({ severity: 'success', summary: '新增备份任务成功', detail: '' });
                     this.refresh();
                 });
+                this.dataService.runTask(res.body.id).subscribe(d => {});
             },
             error3 => {
                 // console.log('error');
