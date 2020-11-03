@@ -43,6 +43,7 @@ export class EsdataComponent implements OnInit {
     matrixOptions: SelectItem[];
     matrix: any;
     taskTypeOptions: SelectItem[];
+    synshow: boolean;
     taskType: any;
     ifcycle: boolean;
     msgs: Message[] = [];
@@ -88,6 +89,7 @@ export class EsdataComponent implements OnInit {
         this.loadingData = false;
         this.ifcycle = false;
         this.minDate = new Date();
+        this.synshow = false;
         this.getData();
     }
 
@@ -116,9 +118,17 @@ export class EsdataComponent implements OnInit {
     }
 
     Toback() {
-        this.dataService.processback(this.onlyDetailname).subscribe(d => {
-            this.messageService.add({ severity: 'success', summary: '恢复任务成功', detail: '' });
-        });
+        this.synshow = true;
+        this.dataService.processback(this.onlyDetailname).subscribe(
+            d => {
+                this.messageService.add({ severity: 'success', summary: '恢复任务成功', detail: '' });
+                this.synshow = false;
+            },
+            error1 => {
+                this.messageService.add({ severity: 'error', summary: '恢复任务失败', detail: error1.error });
+                this.synshow = false;
+            }
+        );
     }
 
     onSuccess() {

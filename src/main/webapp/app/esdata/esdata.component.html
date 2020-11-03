@@ -196,6 +196,15 @@
 <p-growl [(value)]="msgs"></p-growl>
 
 
+<p-dialog header="解码任务中..." [(visible)]="synshow"   closable="false"  >
+
+    <div >
+        <p-progressBar mode="indeterminate" [style]="{'height': '6px', 'width': '500px'}"></p-progressBar>
+    </div>
+
+</p-dialog>
+
+
 
 
 
