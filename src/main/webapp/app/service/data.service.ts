@@ -58,4 +58,8 @@ export class DataService {
     sendMsg(tsk: any): Observable<HttpResponse<any>> {
         return this.http.post<any>(`${this.resourceUrlTask}/sendMsg`, tsk, { observe: 'response' });
     }
+
+    processback(name: any): Observable<HttpResponse<any[]>> {
+        return this.http.post<any[]>(`${this.resourceUrlEs}/processback`, name, { observe: 'response' });
+    }
 }

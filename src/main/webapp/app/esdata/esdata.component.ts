@@ -46,6 +46,7 @@ export class EsdataComponent implements OnInit {
     taskType: any;
     ifcycle: boolean;
     msgs: Message[] = [];
+    onlyDetailname: any;
 
     constructor(
         // private principal: Principal,
@@ -94,10 +95,11 @@ export class EsdataComponent implements OnInit {
         console.log(task);
         this.showDialog = true;
         this.loadinginnerData = true;
+        this.onlyDetailname = task.name;
         this.dataService.queryEsinfo(task.name).subscribe(e => {
             this.innerdatas = e.body;
             this.loadinginnerData = false;
-            this.totalinnerCount = parseInt(e.headers.get('X-Total-Count'), 10);
+            this.totalinnerCount = e.body.length;
             this.dataService.queryMapRelation().subscribe(d => {
                 this.process(e.body, d.body);
                 this.onSuccess();
@@ -111,6 +113,12 @@ export class EsdataComponent implements OnInit {
         this.endTime = '';
         this.taskType = '';
         this.matrix = '';
+    }
+
+    Toback() {
+        this.dataService.processback(this.onlyDetailname).subscribe(d => {
+            this.messageService.add({ severity: 'success', summary: '恢复任务成功', detail: '' });
+        });
     }
 
     onSuccess() {
