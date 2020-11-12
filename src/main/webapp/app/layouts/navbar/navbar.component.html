@@ -12,7 +12,7 @@
                 <a class="nav-link" routerLink="/loginfo" (click)="collapseNavbar()">
                     <span>
                         <fa-icon icon="home"></fa-icon>
-                        <span>日志信息</span>
+                        <span>识别日志</span>
                     </span>
                 </a>
             </li>
@@ -28,24 +28,36 @@
                 <a class="nav-link" routerLink="/map" (click)="collapseNavbar()">
                     <span>
                         <fa-icon icon="tasks"></fa-icon>
-                        <span>标注信息</span>
+                        <span>地图标注</span>
                     </span>
                 </a>
             </li>
-            <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-            <!--<li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">-->
-                <!--<a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">-->
-                    <!--<span>-->
-                        <!--<fa-icon icon="th-list"></fa-icon>-->
-                        <!--<span>-->
-                            <!--Entities-->
-                        <!--</span>-->
-                    <!--</span>-->
-                <!--</a>-->
-                <!--<ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">-->
-                    <!--&lt;!&ndash; jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here &ndash;&gt;-->
-                <!--</ul>-->
-            <!--</li>-->
+
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="admin/gateway" routerLinkActive="active" (click)="collapseNavbar()">
+                    <fa-icon icon="road" fixedWidth="true"></fa-icon>
+                    <span>资源发现</span>
+                </a>
+            </li>
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="admin/user-management" routerLinkActive="active" (click)="collapseNavbar()">
+                    <fa-icon icon="user" fixedWidth="true"></fa-icon>
+                    <span>用户管理</span>
+                </a>
+            </li>
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="admin/audits" routerLinkActive="active" (click)="collapseNavbar()">
+                    <fa-icon icon="bell" fixedWidth="true"></fa-icon>
+                    <span>登录日志</span>
+                </a>
+            </li>
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="admin/jhi-metrics" routerLinkActive="active" (click)="collapseNavbar()">
+                    <fa-icon icon="tachometer-alt" fixedWidth="true"></fa-icon>
+                    <span>平台质量</span>
+                </a>
+            </li>
+
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
                     <span>
@@ -54,30 +66,30 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
-                    <li>
-                        <a class="dropdown-item" routerLink="admin/gateway" routerLinkActive="active" (click)="collapseNavbar()">
-                            <fa-icon icon="road" fixedWidth="true"></fa-icon>
-                            <span>汇聚信息</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="admin/user-management" routerLinkActive="active" (click)="collapseNavbar()">
-                            <fa-icon icon="user" fixedWidth="true"></fa-icon>
-                            <span>用户管理</span>
-                        </a>
-                    </li>
+<!--                    <li>-->
+<!--                        <a class="dropdown-item" routerLink="admin/gateway" routerLinkActive="active" (click)="collapseNavbar()">-->
+<!--                            <fa-icon icon="road" fixedWidth="true"></fa-icon>-->
+<!--                            <span>汇聚信息</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a class="dropdown-item" routerLink="admin/user-management" routerLinkActive="active" (click)="collapseNavbar()">-->
+<!--                            <fa-icon icon="user" fixedWidth="true"></fa-icon>-->
+<!--                            <span>用户管理</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
                     <li>
                         <a class="dropdown-item" routerLink="admin/jhi-tracker" routerLinkActive="active" (click)="collapseNavbar()">
                             <fa-icon icon="eye" fixedWidth="true"></fa-icon>
                             <span>用户跟踪</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="admin/jhi-metrics" routerLinkActive="active" (click)="collapseNavbar()">
-                            <fa-icon icon="tachometer-alt" fixedWidth="true"></fa-icon>
-                            <span>Metrics</span>
-                        </a>
-                    </li>
+<!--                    <li>-->
+<!--                        <a class="dropdown-item" routerLink="admin/jhi-metrics" routerLinkActive="active" (click)="collapseNavbar()">-->
+<!--                            <fa-icon icon="tachometer-alt" fixedWidth="true"></fa-icon>-->
+<!--                            <span>平台质量</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
                     <li>
                         <a class="dropdown-item" routerLink="admin/jhi-health" routerLinkActive="active" (click)="collapseNavbar()">
                             <fa-icon icon="heart" fixedWidth="true"></fa-icon>
@@ -90,12 +102,12 @@
                             <span>相关配置</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="admin/audits" routerLinkActive="active" (click)="collapseNavbar()">
-                            <fa-icon icon="bell" fixedWidth="true"></fa-icon>
-                            <span>Audits</span>
-                        </a>
-                    </li>
+<!--                    <li>-->
+<!--                        <a class="dropdown-item" routerLink="admin/audits" routerLinkActive="active" (click)="collapseNavbar()">-->
+<!--                            <fa-icon icon="bell" fixedWidth="true"></fa-icon>-->
+<!--                            <span>Audits</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
                     <li>
                         <a class="dropdown-item" routerLink="admin/logs" routerLinkActive="active" (click)="collapseNavbar()">
                             <fa-icon icon="tasks" fixedWidth="true"></fa-icon>
