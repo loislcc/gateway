@@ -1,0 +1,34 @@
+<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=nSxiPohfziUaCuONe4ViUP2N"></script>-->
+<!--<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>-->
+
+<div id="topoSvg" class="topomap">
+    <div style="display: inline">
+        <div style="float:left">
+
+
+            <div style="display: inline">
+                <button name="refresh" pButton type="button" icon="fa fa-check" label="启动" (click)="start()"></button>
+            </div>
+
+            <div style="display: inline">
+            <span style="display: inline">
+                <p-dropdown name="domain" [options]="numberOptions" [(ngModel)]="number" [filter]="true"　placeholder="次数"
+                            [autoWidth]="true" ></p-dropdown>
+            </span>
+            </div>
+            <div style="display: inline">
+                <button name="refresh" pButton type="button" icon="fa fa-search" (click)="searchResult()"></button>
+            </div>
+
+
+        </div>
+    </div>
+    <svg ></svg>
+</div>
+<p-dialog header="运行中..." [(visible)]="synshow"   closable="false"  >
+
+    <div >
+        <p-progressBar mode="indeterminate" [style]="{'height': '6px', 'width': '500px'}"></p-progressBar>
+    </div>
+
+</p-dialog>

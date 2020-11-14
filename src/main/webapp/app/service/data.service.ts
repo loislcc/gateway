@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { createRequestOption } from 'app/shared';
-import { SERVER_API_URL, SERVICE_GDATA } from 'app/app.constants';
+import { SERVER_API_URL, SERVICE_EDGE, SERVICE_GDATA } from 'app/app.constants';
 
 @Injectable({
     providedIn: 'root'
@@ -15,6 +15,8 @@ export class DataService {
     private resourceUrlEs = SERVER_API_URL + SERVICE_GDATA + '/api/esinfos';
 
     private resourceUrlRelation = SERVER_API_URL + SERVICE_GDATA + '/api/maprelations';
+
+    private resourceEdge = SERVER_API_URL + SERVICE_EDGE + '/api/game';
 
     constructor(private http: HttpClient) {}
 
@@ -61,5 +63,9 @@ export class DataService {
 
     processback(name: any): Observable<HttpResponse<any[]>> {
         return this.http.post<any[]>(`${this.resourceUrlEs}/processback`, name, { observe: 'response' });
+    }
+
+    startgame(name: any): Observable<HttpResponse<any[]>> {
+        return this.http.post<any[]>(`${this.resourceEdge}`, name, { observe: 'response' });
     }
 }

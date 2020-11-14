@@ -57,6 +57,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { AddTaskComponent } from 'app/esdata/addTask.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
+import { TopoComponent } from 'app/topo/topo.component';
 
 @NgModule({
     imports: [
@@ -112,7 +113,8 @@ import { ToastModule } from 'primeng/toast';
         EsdataComponent,
         LoginfoComponent,
         ConfirmComponent,
-        AddTaskComponent
+        AddTaskComponent,
+        TopoComponent
     ],
     entryComponents: [ConfirmComponent],
     providers: [
