@@ -58,6 +58,7 @@ import { AddTaskComponent } from 'app/esdata/addTask.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { TopoComponent } from 'app/topo/topo.component';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
     imports: [
@@ -101,7 +102,8 @@ import { TopoComponent } from 'app/topo/topo.component';
         ReactiveFormsModule,
         CalendarModule,
         AutoCompleteModule,
-        ToastModule
+        ToastModule,
+        FileUploadModule
     ],
     declarations: [
         JhiMainComponent,

@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TrackerService } from 'app/service/tracker.service';
 
 import { DataService } from 'app/service/data.service';
 import * as d3 from 'd3';
-import { SelectItem } from 'primeng/api';
+import { Message, MessageService, SelectItem } from 'primeng/api';
 import { forEach } from '@angular/router/src/utils/collection';
+import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
+import { SERVER_API_URL } from 'app/app.constants';
+import { CookieService } from 'ngx-cookie';
 declare var BMap: any;
 
 @Component({
@@ -13,6 +16,7 @@ declare var BMap: any;
     styleUrls: ['topo.scss']
 })
 export class TopoComponent implements OnInit {
+    @ViewChild('fileInput') fileInput: any;
     width: any;
     height: any;
     svg: any;
@@ -23,29 +27,47 @@ export class TopoComponent implements OnInit {
     allover: any; // 全局视图 节点加连线
     allnodes: any[] = [{ id: 'edge', name: 'edge' }, { id: 'edge2', name: 'edge2' }, { id: 'edge3', name: 'edge3' }];
     linkshow: boolean;
+    displayImportTopoDialog: boolean;
     linkcols: any[];
     datas: any[];
+    uploader: FileUploader;
+    msgs: Message[] = [];
 
-    constructor(private trackerService: TrackerService, private dataService: DataService) {}
+    constructor(
+        private trackerService: TrackerService,
+        private dataService: DataService,
+        private cookieService: CookieService,
+        private messageService: MessageService
+    ) {}
 
     ngOnInit() {
         this.synshow = false;
         this.linkshow = false;
+        this.displayImportTopoDialog = false;
         this.linkcols = [
             { field: 'srcnode', header: '源节点' },
             { field: 'endnode', header: '宿节点' },
             { field: 'filename', header: '传输内容' }
         ];
-        const res = {
-            nodes: [{ id: 'edge1', name: 'edge1' }, { id: 'edge2', name: 'edge2' }, { id: 'edge3', name: 'edge3' }],
-            links: [
-                { source: 'edge1', target: 'edge2', content: '3' },
-                { source: 'edge2', target: 'edge1', content: '1' },
-                { source: 'edge1', target: 'edge3', content: '3' },
-                { source: 'edge2', target: 'edge3', content: '1' }
-            ]
+        // const res = {
+        //     nodes: [{ id: 'edge1', name: 'edge1' }, { id: 'edge2', name: 'edge2' }, { id: 'edge3', name: 'edge3' }],
+        //     links: [
+        //         { source: 'edge1', target: 'edge2', content: '3' },
+        //         { source: 'edge2', target: 'edge1', content: '1' },
+        //         { source: 'edge1', target: 'edge3', content: '3' },
+        //         { source: 'edge2', target: 'edge3', content: '1' }
+        //     ]
+        // };
+        // this.onSuccess(res);
+        this.uploader = new FileUploader({
+            url: SERVER_API_URL + 'gdata/api/importimage',
+            method: 'POST',
+            itemAlias: 'uploadfile'
+        });
+        this.uploader.onBeforeUploadItem = fileItem => {
+            fileItem.headers.push({ name: 'X-XSRF-TOKEN', value: this.cookieService.get('XSRF-TOKEN') });
+            return fileItem;
         };
-        this.onSuccess(res);
     }
 
     onSuccess(res) {
@@ -224,6 +246,30 @@ export class TopoComponent implements OnInit {
         };
         nodelist.push(item);
         this.datas = nodelist;
+    }
+
+    upload(fileItem: FileItem) {
+        fileItem.onSuccess = (response, status, headers) => {
+            if (status === 200) {
+                // 上传文件成功
+                this.messageService.add({ severity: 'success', summary: '上传成功', detail: '' });
+                this.displayImportTopoDialog = false;
+                window.location.reload();
+            } else {
+                this.messageService.add({ severity: 'error', summary: '上传失败', detail: response });
+            }
+        };
+        fileItem.onError = (response: string, status: number, headers: ParsedResponseHeaders) => {
+            this.messageService.add({ severity: 'error', summary: '上传失败', detail: response });
+        };
+
+        fileItem.upload();
+    }
+
+    onupload() {
+        this.displayImportTopoDialog = true;
+        this.fileInput.nativeElement.value = '';
+        this.uploader.clearQueue();
     }
 
     start() {

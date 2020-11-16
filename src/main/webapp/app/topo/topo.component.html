@@ -5,7 +5,9 @@
     <div style="display: inline">
         <div style="float:left">
 
-
+            <div style="display: inline">
+                <button name="refresh" pButton type="button" icon="fa fa-file-o" label="上传文件" (click)="onupload()"></button>
+            </div>
             <div style="display: inline">
                 <button name="refresh" pButton type="button" icon="fa fa-check" label="启动" (click)="start()"></button>
             </div>
@@ -60,3 +62,64 @@
         </p-table>
     </div>
 </p-dialog>
+
+<p-dialog header="导入拓扑" [(visible)]="displayImportTopoDialog" modal="true" [style]="{width: '550px'}" responsive="true"
+          closable="true" dismissableMask="true" rtl="true">
+    <div>
+        <div>
+            <label>图片信息</label>
+        </div>
+        <div>
+            <input #fileInput type="file" ng2FileSelect [uploader]="uploader" accept=".png"/>
+        </div>
+        <div>
+            <table class="table table-striped" width="100%" rules="none">
+                <thead>
+                <tr>
+                    <th width="40%">文件名</th>
+                    <th width="20%">大小</th>
+                    <th width="15%">状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of uploader.queue">
+                    <td><strong>{{ item?.file?.name }}</strong></td>
+                    <td nowrap>{{ item?.file?.size / 1024 / 1024 | number:'.2' }} MB</td>
+                    <td class="text-center" style="width: 20%">
+                        <span *ngIf="item.isSuccess">上传成功</span>
+                        <span *ngIf="item.isCancel">人为中止</span>
+                        <span *ngIf="item.isError">上传失败</span>
+                    </td>
+                    <td nowrap>
+                        <button type="button" class="btn btn-success btn-xs"
+                                (click)="upload(item)"
+                                [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                            <span class="glyphicon glyphicon-upload"></span> 上传
+                        </button>
+                        <button type="button" class="btn btn-warning btn-xs"
+                                (click)="item.cancel()"
+                                [disabled]="!item.isUploading">
+                            <span class="glyphicon glyphicon-ban-circle"></span> 取消
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs"
+                                (click)="item.remove()">
+                            <span class="glyphicon glyphicon-trash"></span> 移除
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div>
+                <span>上传进度:</span>
+                <div class="progress" style="">
+                    <div class="progress-bar" role="progressbar"
+                         [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                </div>
+            </div>
+        </div>
+        <br/>
+    </div>
+</p-dialog>
+
+<p-growl [(value)]="msgs"></p-growl>
