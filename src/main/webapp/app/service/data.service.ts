@@ -65,7 +65,7 @@ export class DataService {
         return this.http.post<any[]>(`${this.resourceUrlEs}/processback`, name, { observe: 'response' });
     }
 
-    startgame(name: any): Observable<HttpResponse<any[]>> {
-        return this.http.post<any[]>(`${this.resourceEdge}`, name, { observe: 'response' });
+    startgame(): Observable<HttpResponse<any[]>> {
+        return this.http.get<any[]>(`${this.resourceEdge}`, { observe: 'response' });
     }
 }

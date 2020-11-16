@@ -24,6 +24,9 @@ zuul: # those values must be configured depending on the application specific ne
         max-semaphores: 500
     ignoredServices: 'consul,gateway' # Prevent Consul and the "gateway" app itself from having a Zuul route automatically created for them
 
+ribbon:        #设置ribbon的超时时间小于zuul的超时时间
+    ReadTimeout: 1000000
+    ConnectTimeout: 1000000
 # See https://github.com/Netflix/Hystrix/wiki/Configuration
 hystrix:
     command:
@@ -31,7 +34,7 @@ hystrix:
             execution:
                 isolation:
                     thread:
-                        timeoutInMilliseconds: 5000000
+                        timeoutInMilliseconds: 500000000
 
 management:
     endpoints:

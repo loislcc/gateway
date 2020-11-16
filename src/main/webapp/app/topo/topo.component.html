@@ -32,3 +32,31 @@
     </div>
 
 </p-dialog>
+
+
+<p-dialog header="链路详细信息" [(visible)]="linkshow" modal="true"  responsive="true" closable="true" dismissableMask="true" rtl="true" >
+
+    <div>
+        <p-table [columns]="linkcols" [value]="datas"  selectionMode="single"
+                 [paginator]="true" rows="15" >
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns">
+                        {{col.header}}
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                    <td *ngFor="let col of columns">
+                        {{rowData[col.field]}}
+                    </td>
+                </tr>
+
+            </ng-template>
+            <!--<ng-template pTemplate="summary">-->
+            <!--There are {{datas?.length}} data.-->
+            <!--</ng-template>-->
+        </p-table>
+    </div>
+</p-dialog>

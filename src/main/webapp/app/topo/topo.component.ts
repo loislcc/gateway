@@ -4,6 +4,7 @@ import { TrackerService } from 'app/service/tracker.service';
 import { DataService } from 'app/service/data.service';
 import * as d3 from 'd3';
 import { SelectItem } from 'primeng/api';
+import { forEach } from '@angular/router/src/utils/collection';
 declare var BMap: any;
 
 @Component({
@@ -18,11 +19,23 @@ export class TopoComponent implements OnInit {
     numberOptions: SelectItem[];
     number: any;
     synshow: boolean;
+    graphlinks: any[]; // 接口返回所有迭代的连线
+    allover: any; // 全局视图 节点加连线
+    allnodes: any[] = [{ id: 'edge', name: 'edge' }, { id: 'edge2', name: 'edge2' }, { id: 'edge3', name: 'edge3' }];
+    linkshow: boolean;
+    linkcols: any[];
+    datas: any[];
 
     constructor(private trackerService: TrackerService, private dataService: DataService) {}
 
     ngOnInit() {
         this.synshow = false;
+        this.linkshow = false;
+        this.linkcols = [
+            { field: 'srcnode', header: '源节点' },
+            { field: 'endnode', header: '宿节点' },
+            { field: 'filename', header: '传输内容' }
+        ];
         const res = {
             nodes: [{ id: 'edge1', name: 'edge1' }, { id: 'edge2', name: 'edge2' }, { id: 'edge3', name: 'edge3' }],
             links: [
@@ -36,13 +49,12 @@ export class TopoComponent implements OnInit {
     }
 
     onSuccess(res) {
-        console.log('okkk');
         const bk = d3.select('#topoSvg');
         const bound = (bk.node() as HTMLElement).getBoundingClientRect();
         this.width = bound.width;
         this.height = bound.height;
         const nodes = res.nodes;
-        const links = res.links;
+        const links = this.dealinks(res.links);
         this.doLinkMap(links);
         console.log(nodes);
         console.log(links);
@@ -58,27 +70,26 @@ export class TopoComponent implements OnInit {
             .force(
                 'collide',
                 d3
-                    .forceCollide(150)
+                    .forceCollide(125)
                     .strength(0.2)
                     .iterations(1)
             )
-            // .force('collide', d3.forceCollide(20).strength(0.2).iterations(1))
             .force('center', d3.forceCenter());
 
-        var marker = this.svg
+        const marker = this.svg
             .append('marker')
             .attr('id', 'resolved')
             .attr('markerUnits', 'userSpaceOnUse')
-            .attr('viewBox', '0 -5 10 10') //坐标系的区域
-            .attr('refX', 16) //箭头坐标
+            .attr('viewBox', '0 -5 10 10') // 坐标系的区域
+            .attr('refX', 16) // 箭头坐标
             .attr('refY', 0)
-            .attr('markerWidth', 12) //标识的大小
+            .attr('markerWidth', 12) // 标识的大小
             .attr('markerHeight', 12)
-            .attr('orient', 'auto') //绘制方向，可设定为：auto（自动确认方向）和 角度值
-            .attr('stroke-width', 2) //箭头宽度
+            .attr('orient', 'auto') // 绘制方向，可设定为：auto（自动确认方向）和 角度值
+            .attr('stroke-width', 2) // 箭头宽度
             .append('path')
-            .attr('d', 'M0,-5L10,0L0,5') //箭头的路径
-            .attr('fill', '#000000'); //箭头颜色
+            .attr('d', 'M0,-5L10,0L0,5') // 箭头的路径
+            .attr('fill', '#000000'); // 箭头颜色
 
         const linkall = g
             .append('g')
@@ -88,15 +99,13 @@ export class TopoComponent implements OnInit {
             .enter()
             .append('path')
             .attr('stroke-width', 3)
-            .attr('id', function(d, i) {
-                return 'edgepath' + i;
-            })
+            .attr('id', d => 'path' + d.id)
+            .attr('marker-end', 'url(#resolved)')
             .style('stroke', '#999')
             .style('stroke-opacity', '1.0')
             .attr('stroke-width', 2)
             .style('fill', 'none')
-            .attr('marker-end', 'url(#resolved)');
-        // .on('dblclick', d => this.onLinkonedblclick(d));
+            .on('dblclick', d => this.onLinkonedblclick(d));
 
         const node = g
             .append('g')
@@ -107,7 +116,7 @@ export class TopoComponent implements OnInit {
             .append('circle')
             .attr('r', 10)
             .attr('fill', '#aec7e8')
-            // .attr('id', d => 'idotn' + d.id)
+            .attr('id', d => 'id' + d.id)
             .call(
                 d3
                     .drag()
@@ -144,7 +153,7 @@ export class TopoComponent implements OnInit {
             .style('text-anchor', 'middle')
             .style('pointer-events', 'none')
             .attr('startOffset', '50%')
-            .text(d => d.content);
+            .text(d => d.content.length);
 
         simulation.nodes(nodes).on('tick', () => {
             linkall.attr('d', function(d) {
@@ -179,7 +188,9 @@ export class TopoComponent implements OnInit {
             .y(this.height / 2);
 
         function dragstarted(event) {
-            if (!event.active) simulation.alphaTarget(0.3).restart();
+            if (!event.active) {
+                simulation.alphaTarget(0.3).restart();
+            }
             event.subject.fx = event.subject.x;
             event.subject.fy = event.subject.y;
         }
@@ -190,22 +201,97 @@ export class TopoComponent implements OnInit {
         }
 
         function dragended(event) {
-            if (!event.active) simulation.alphaTarget(0);
+            if (!event.active) {
+                simulation.alphaTarget(0);
+            }
             event.subject.fx = null;
             event.subject.fy = null;
         }
     }
 
-    onNodeclick(r) {}
+    onNodeclick(r) {
+        console.log(r);
+    }
+
+    onLinkonedblclick(d) {
+        console.log(d);
+        this.linkshow = true;
+        const nodelist = [];
+        const item = {
+            srcnode: d.source.id,
+            endnode: d.target.id,
+            filename: d.content
+        };
+        nodelist.push(item);
+        this.datas = nodelist;
+    }
 
     start() {
         this.synshow = true;
-        this.dataService.startgame('name').subscribe(res => {
+        this.dataService.startgame().subscribe(res => {
             this.synshow = false;
+            this.graphlinks = res.body;
+            const num = this.graphlinks.length;
+            const temp: SelectItem[] = [];
+            temp.push({
+                label: '全体视图',
+                value: 0
+            });
+            for (let i = 1; i <= num; i++) {
+                temp.push({
+                    label: '第' + i.toLocaleString() + '次外部迭代',
+                    value: i
+                });
+            }
+            this.numberOptions = temp;
+            const tmp: any[] = [];
+            this.processallinks(this.graphlinks, tmp);
+            this.allover = {
+                nodes: this.allnodes,
+                links: tmp
+            };
+            this.onSuccess(this.allover);
         });
     }
 
-    searchResult() {}
+    searchResult() {
+        if (this.number === 0) {
+            this.onSuccess(this.allover);
+        } else {
+            const drawlinks = this.graphlinks[this.number - 1];
+            const data: any = {
+                nodes: this.allnodes,
+                links: drawlinks
+            };
+            this.onSuccess(data);
+        }
+    }
+
+    processallinks(graphlinks: any[], tmpallinks: any[]) {
+        graphlinks.forEach(e => {
+            const onestep: any[] = e;
+            onestep.forEach(d => {
+                tmpallinks.push(d);
+            });
+        });
+    }
+
+    dealinks(links: any[]) {
+        const res = [];
+        if (links) {
+            let i = 0;
+            links.forEach(link => {
+                const tmp: any = {};
+                tmp.source = link.source;
+                tmp.target = link.target;
+                tmp.linkid = i++;
+                tmp.id = i++;
+                tmp.content = link.content;
+                res.push(tmp);
+            });
+        }
+        return res;
+    }
 
     doLinkMap(links) {
         const linkGroup = {};
