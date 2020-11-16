@@ -21,7 +21,9 @@ export class TopoComponent implements OnInit {
     height: any;
     svg: any;
     numberOptions: SelectItem[];
+    edgeOptions: SelectItem[];
     number: any;
+    edge: any;
     synshow: boolean;
     graphlinks: any[]; // 接口返回所有迭代的连线
     allover: any; // 全局视图 节点加连线
@@ -49,18 +51,19 @@ export class TopoComponent implements OnInit {
             { field: 'endnode', header: '宿节点' },
             { field: 'filename', header: '传输内容' }
         ];
-        // const res = {
-        //     nodes: [{ id: 'edge1', name: 'edge1' }, { id: 'edge2', name: 'edge2' }, { id: 'edge3', name: 'edge3' }],
-        //     links: [
-        //         { source: 'edge1', target: 'edge2', content: '3' },
-        //         { source: 'edge2', target: 'edge1', content: '1' },
-        //         { source: 'edge1', target: 'edge3', content: '3' },
-        //         { source: 'edge2', target: 'edge3', content: '1' }
-        //     ]
-        // };
-        // this.onSuccess(res);
+        this.edgeOptions = [{ label: 'edge', value: 'edge' }, { label: 'edge2', value: 'edge2' }, { label: 'edge3', value: 'edge3' }];
+        const res = {
+            nodes: [{ id: 'edge1', name: 'edge1' }, { id: 'edge2', name: 'edge2' }, { id: 'edge3', name: 'edge3' }],
+            links: [
+                { source: 'edge1', target: 'edge2', content: ['3', '4'] },
+                { source: 'edge2', target: 'edge1', content: ['1'] },
+                { source: 'edge1', target: 'edge3', content: ['3', '5'] },
+                { source: 'edge2', target: 'edge3', content: ['1'] }
+            ]
+        };
+        this.onSuccess(res);
         this.uploader = new FileUploader({
-            url: SERVER_API_URL + 'gdata/api/importimage',
+            url: SERVER_API_URL + 'edge/api/importimage',
             method: 'POST',
             itemAlias: 'uploadfile'
         });
@@ -76,7 +79,8 @@ export class TopoComponent implements OnInit {
         this.width = bound.width;
         this.height = bound.height;
         const nodes = res.nodes;
-        const links = this.dealinks(res.links);
+        const links = res.links;
+        this.dealinks(res.links);
         this.doLinkMap(links);
         console.log(nodes);
         console.log(links);
@@ -169,9 +173,7 @@ export class TopoComponent implements OnInit {
 
         edgelabels
             .append('textPath')
-            .attr('xlink:href', function(d, i) {
-                return '#edgepath' + i;
-            })
+            .attr('xlink:href', d => '#path' + d.id)
             .style('text-anchor', 'middle')
             .style('pointer-events', 'none')
             .attr('startOffset', '50%')
@@ -213,13 +215,13 @@ export class TopoComponent implements OnInit {
             if (!event.active) {
                 simulation.alphaTarget(0.3).restart();
             }
-            event.subject.fx = event.subject.x;
-            event.subject.fy = event.subject.y;
+            event.fx = event.x;
+            event.fy = event.y;
         }
 
         function dragged(event) {
-            event.subject.fx = event.x;
-            event.subject.fy = event.y;
+            event.fx = event.x;
+            event.fy = event.y;
         }
 
         function dragended(event) {
@@ -254,7 +256,6 @@ export class TopoComponent implements OnInit {
                 // 上传文件成功
                 this.messageService.add({ severity: 'success', summary: '上传成功', detail: '' });
                 this.displayImportTopoDialog = false;
-                window.location.reload();
             } else {
                 this.messageService.add({ severity: 'error', summary: '上传失败', detail: response });
             }
@@ -299,6 +300,33 @@ export class TopoComponent implements OnInit {
             this.onSuccess(this.allover);
         });
     }
+    changedge() {
+        if (this.edge === 'edge') {
+            this.uploader = new FileUploader({
+                url: SERVER_API_URL + 'edge/api/importimage',
+                method: 'POST',
+                itemAlias: 'uploadfile'
+            });
+        } else {
+            if (this.edge === 'edge2') {
+                this.uploader = new FileUploader({
+                    url: SERVER_API_URL + 'edge2/api/importimage',
+                    method: 'POST',
+                    itemAlias: 'uploadfile'
+                });
+            } else {
+                this.uploader = new FileUploader({
+                    url: SERVER_API_URL + 'edge3/api/importimage',
+                    method: 'POST',
+                    itemAlias: 'uploadfile'
+                });
+            }
+        }
+        this.uploader.onBeforeUploadItem = fileItem => {
+            fileItem.headers.push({ name: 'X-XSRF-TOKEN', value: this.cookieService.get('XSRF-TOKEN') });
+            return fileItem;
+        };
+    }
 
     searchResult() {
         if (this.number === 0) {
@@ -327,16 +355,9 @@ export class TopoComponent implements OnInit {
         if (links) {
             let i = 0;
             links.forEach(link => {
-                const tmp: any = {};
-                tmp.source = link.source;
-                tmp.target = link.target;
-                tmp.linkid = i++;
-                tmp.id = i++;
-                tmp.content = link.content;
-                res.push(tmp);
+                link.id = i++;
             });
         }
-        return res;
     }
 
     doLinkMap(links) {
