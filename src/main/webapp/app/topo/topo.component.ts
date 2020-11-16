@@ -273,6 +273,16 @@ export class TopoComponent implements OnInit {
         this.uploader.clearQueue();
     }
 
+    reset() {
+        this.dataService.resetEdge().subscribe(d => {
+            this.dataService.resetEdge2().subscribe(e => {
+                this.dataService.resetEdge3().subscribe(v => {
+                    this.messageService.add({ severity: 'success', summary: '清空成功', detail: '' });
+                });
+            });
+        });
+    }
+
     start() {
         this.synshow = true;
         this.dataService.startgame().subscribe(res => {

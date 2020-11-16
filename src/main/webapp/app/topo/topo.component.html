@@ -1,7 +1,7 @@
 <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=nSxiPohfziUaCuONe4ViUP2N"></script>-->
 <!--<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>-->
 
-<div id="topoSvg" class="topomap">
+<div id="topoSvg" class="topomap" xmlns="http://www.w3.org/1999/html">
     <div style="display: inline">
         <div style="float:left">
 
@@ -20,6 +20,9 @@
             </div>
             <div style="display: inline">
                 <button name="refresh" pButton type="button" icon="fa fa-search" (click)="searchResult()"></button>
+            </div>
+            <div style="display: inline">
+                <button name="refresh" pButton type="button" icon="fa fa-user" label="清空" (click)="reset()"></button>
             </div>
 
 
@@ -67,15 +70,15 @@
           closable="true" dismissableMask="true" rtl="true">
     <div>
         <div style="display: inline">
-            <div>
-                <label>图片信息</label>
-            </div>
-            <div>
-                <label>传送节点</label>
-                <p-dropdown name="node" [options]="edgeOptions" [(ngModel)]="edge" [filter]="true"　placeholder="选择节点"
+            <div style="display: inline">
+                <label><strong>传送节点:</strong></label>
+                <p-dropdown name="node" [options]="edgeOptions" [(ngModel)]="edge" 　placeholder="选择节点"
                             [autoWidth]="true" (onChange)="changedge()"></p-dropdown>
             </div>
         </div>
+        <br>
+        <br>
+
         <div>
             <input #fileInput type="file" ng2FileSelect [uploader]="uploader" accept=".png"/>
         </div>
