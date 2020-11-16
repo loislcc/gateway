@@ -26,7 +26,7 @@
         "@ngx-translate/http-loader": "4.0.0",
         "bootstrap": "4.2.1",
         "core-js": "2.6.4",
-        "d3": "^6.2.0",
+        "d3": "^5.9.7",
         "echarts": "^4.4.0",
         "moment": "2.24.0",
         "ng-jhipster": "0.9.1",
