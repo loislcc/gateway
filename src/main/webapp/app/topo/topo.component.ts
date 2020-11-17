@@ -52,16 +52,16 @@ export class TopoComponent implements OnInit {
             { field: 'filename', header: '传输内容' }
         ];
         this.edgeOptions = [{ label: 'edge', value: 'edge' }, { label: 'edge2', value: 'edge2' }, { label: 'edge3', value: 'edge3' }];
-        const res = {
-            nodes: [{ id: 'edge1', name: 'edge1' }, { id: 'edge2', name: 'edge2' }, { id: 'edge3', name: 'edge3' }],
-            links: [
-                { source: 'edge1', target: 'edge2', content: ['3', '4'] },
-                { source: 'edge2', target: 'edge1', content: ['1'] },
-                { source: 'edge1', target: 'edge3', content: ['3', '5'] },
-                { source: 'edge2', target: 'edge3', content: ['1'] }
-            ]
-        };
-        this.onSuccess(res);
+        // const res = {
+        //     nodes: [{ id: 'edge1', name: 'edge1' }, { id: 'edge2', name: 'edge2' }, { id: 'edge3', name: 'edge3' }],
+        //     links: [
+        //         { source: 'edge1', target: 'edge2', content: ['3', '4'] },
+        //         { source: 'edge2', target: 'edge1', content: ['1'] },
+        //         { source: 'edge1', target: 'edge3', content: ['3', '5'] },
+        //         { source: 'edge2', target: 'edge3', content: ['1'] }
+        //     ]
+        // };
+        // this.onSuccess(res);
         this.uploader = new FileUploader({
             url: SERVER_API_URL + 'edge/api/importimage',
             method: 'POST',
@@ -211,25 +211,25 @@ export class TopoComponent implements OnInit {
             .x(this.width / 2)
             .y(this.height / 2);
 
-        function dragstarted(event) {
-            if (!event.active) {
+        function dragstarted(d) {
+            if (!d3.event.active) {
                 simulation.alphaTarget(0.3).restart();
             }
-            event.fx = event.x;
-            event.fy = event.y;
+            d.fx = d.x;
+            d.fy = d.y;
         }
 
-        function dragged(event) {
-            event.fx = event.x;
-            event.fy = event.y;
+        function dragged(d) {
+            d.fx = d3.event.x;
+            d.fy = d3.event.y;
         }
 
-        function dragended(event) {
-            if (!event.active) {
+        function dragended(d) {
+            if (!d3.event.active) {
                 simulation.alphaTarget(0);
             }
-            event.subject.fx = null;
-            event.subject.fy = null;
+            d.fx = null;
+            d.fy = null;
         }
     }
 
