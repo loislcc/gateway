@@ -125,7 +125,7 @@ export class EsdataComponent implements OnInit {
                 this.synshow = false;
             },
             error1 => {
-                this.messageService.add({ severity: 'error', summary: '恢复任务失败', detail: error1.error });
+                this.messageService.add({ severity: 'error', summary: '恢复任务失败', detail: error1.error.errorinfo });
                 this.synshow = false;
             }
         );

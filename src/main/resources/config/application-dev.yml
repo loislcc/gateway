@@ -38,13 +38,13 @@ spring:
         consul:
             discovery:
                prefer-ip-address: true
-            host: localhost
+            host: 127.0.0.1
             port: 8500
         stream:
             kafka:
                 binder:
-                    brokers: localhost
-                    zk-nodes: localhost
+                    brokers: 127.0.0.1
+                    zk-nodes: 127.0.0.1
             bindings:
                 notificationToGateway:
                     destination: gateway

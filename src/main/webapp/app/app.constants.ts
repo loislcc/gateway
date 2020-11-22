@@ -8,9 +8,11 @@ export const SERVER_API_URL = process.env.SERVER_API_URL;
 export const BUILD_TIMESTAMP = process.env.BUILD_TIMESTAMP;
 export const SERVICE_GDATA = 'gdata';
 export const SERVICE_EDGE = 'edge';
-export const SERVICE_EDGE2 = 'edge';
-export const SERVICE_EDGE3 = 'edge';
+export const SERVICE_EDGE2 = 'edge2';
+export const SERVICE_EDGE3 = 'edge3';
 
 export const ROW_NUM = 10;
 
 export const ConsoleInfo: string[] = ['Welcome to Console'];
+
+export const Reslinks = [];
