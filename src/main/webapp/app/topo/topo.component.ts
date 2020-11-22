@@ -6,7 +6,7 @@ import * as d3 from 'd3';
 import { Message, MessageService, SelectItem } from 'primeng/api';
 import { forEach } from '@angular/router/src/utils/collection';
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
-import { SERVER_API_URL } from 'app/app.constants';
+import { Reslinks, SERVER_API_URL } from 'app/app.constants';
 import { CookieService } from 'ngx-cookie';
 declare var BMap: any;
 
@@ -26,7 +26,9 @@ export class TopoComponent implements OnInit {
     edge: any;
     synshow: boolean;
     graphlinks: any[]; // 接口返回所有迭代的连线
+    linksori: any[];
     allover: any; // 全局视图 节点加连线
+
     allnodes: any[] = [{ id: 'edge', name: 'edge' }, { id: 'edge2', name: 'edge2' }, { id: 'edge3', name: 'edge3' }];
     linkshow: boolean;
     displayImportTopoDialog: boolean;
@@ -34,6 +36,8 @@ export class TopoComponent implements OnInit {
     datas: any[];
     uploader: FileUploader;
     msgs: Message[] = [];
+
+    constLinks: any;
 
     constructor(
         private trackerService: TrackerService,
@@ -52,16 +56,16 @@ export class TopoComponent implements OnInit {
             { field: 'filename', header: '传输内容' }
         ];
         this.edgeOptions = [{ label: 'edge', value: 'edge' }, { label: 'edge2', value: 'edge2' }, { label: 'edge3', value: 'edge3' }];
-        // const res = {
-        //     nodes: [{ id: 'edge1', name: 'edge1' }, { id: 'edge2', name: 'edge2' }, { id: 'edge3', name: 'edge3' }],
-        //     links: [
-        //         { source: 'edge1', target: 'edge2', content: ['3', '4'] },
-        //         { source: 'edge2', target: 'edge1', content: ['1'] },
-        //         { source: 'edge1', target: 'edge3', content: ['3', '5'] },
-        //         { source: 'edge2', target: 'edge3', content: ['1'] }
-        //     ]
-        // };
-        // this.onSuccess(res);
+        const res = {
+            nodes: [{ id: 'edge1', name: 'edge1' }, { id: 'edge2', name: 'edge2' }, { id: 'edge3', name: 'edge3' }],
+            links: [
+                { source: 'edge1', target: 'edge2', content: ['3', '4'] },
+                { source: 'edge2', target: 'edge1', content: ['1'] },
+                { source: 'edge1', target: 'edge3', content: ['3', '5'] },
+                { source: 'edge2', target: 'edge3', content: ['1'] }
+            ]
+        };
+        this.onSuccess(res);
         this.uploader = new FileUploader({
             url: SERVER_API_URL + 'edge/api/importimage',
             method: 'POST',
@@ -80,8 +84,8 @@ export class TopoComponent implements OnInit {
         this.height = bound.height;
         const nodes = res.nodes;
         const links = res.links;
-        this.dealinks(res.links);
-        this.doLinkMap(links);
+        // this.dealinks(res.links);
+        // this.doLinkMap(links);
         console.log(nodes);
         console.log(links);
         this.svg = d3.select('#topoSvg').select('svg');
@@ -91,7 +95,7 @@ export class TopoComponent implements OnInit {
         const g = this.svg.append('g');
         const simulation = d3
             .forceSimulation()
-            .force('link', d3.forceLink().id(d => d.id))
+            .force('link', d3.forceLink().id(d => d.name))
             .force('charge', d3.forceManyBody())
             .force(
                 'collide',
@@ -288,6 +292,9 @@ export class TopoComponent implements OnInit {
         this.dataService.startgame().subscribe(res => {
             this.synshow = false;
             this.graphlinks = res.body;
+
+            this.constLinks = JSON.stringify(res.body);
+
             const num = this.graphlinks.length;
             const temp: SelectItem[] = [];
             temp.push({
@@ -302,12 +309,17 @@ export class TopoComponent implements OnInit {
             }
             this.numberOptions = temp;
             const tmp: any[] = [];
+            console.log(this.graphlinks);
             this.processallinks(this.graphlinks, tmp);
-            this.allover = {
+            this.linksori = tmp;
+
+            this.dealinks(this.linksori);
+            this.doLinkMap(this.linksori);
+            const alltmp = {
                 nodes: this.allnodes,
-                links: tmp
+                links: this.linksori
             };
-            this.onSuccess(this.allover);
+            this.onSuccess(alltmp);
         });
     }
     changedge() {
@@ -340,13 +352,28 @@ export class TopoComponent implements OnInit {
 
     searchResult() {
         if (this.number === 0) {
-            this.onSuccess(this.allover);
+            // const tmp: any[] = [];
+            // this.processallinks(this.graphlinks, tmp);
+            // this.dealinks(tmp);
+            // this.doLinkMap(tmp);
+            const alltmp = {
+                nodes: this.allnodes,
+                links: this.linksori
+            };
+            this.onSuccess(alltmp);
         } else {
-            const drawlinks = this.graphlinks[this.number - 1];
+            const drawlinks: any[] = [];
+            this.processgrouplinks(this.constLinks, drawlinks, this.number);
+
+            console.log('ok');
+            console.log(drawlinks);
+            this.dealinks(drawlinks);
+            this.doLinkMap(drawlinks);
             const data: any = {
                 nodes: this.allnodes,
                 links: drawlinks
             };
+            console.log(this.linksori);
             this.onSuccess(data);
         }
     }
@@ -360,17 +387,39 @@ export class TopoComponent implements OnInit {
         });
     }
 
+    processgrouplinks(graphlinks: any, drawlinks: any[], number) {
+        const tmp = JSON.parse(graphlinks);
+        const orionegroup = tmp[number - 1];
+        console.log('looooook');
+        console.log(orionegroup);
+
+        orionegroup.forEach(e => {
+            drawlinks.push(e);
+        });
+    }
+
     dealinks(links: any[]) {
         const res = [];
         if (links) {
             let i = 0;
             links.forEach(link => {
                 link.id = i++;
+                // if(link.source === 'edge') {
+                //     link.source = 'edge1';
+                // }
+                // if(link.target === 'edge') {
+                //     link.target = 'edge1';
+                // }
             });
         }
     }
 
     doLinkMap(links) {
+        for (let i = 0; i < links.length; i++) {
+            links[i].size = 0;
+            links[i].linknum = 0;
+            console.log(links[i].size + ',' + links[i].linknum);
+        }
         const linkGroup = {};
         // 对连接线进行统计和分组，不区分连接线的方向，只要属于同两个实体，即认为是同一组
         const linkmap = {};
@@ -385,12 +434,14 @@ export class TopoComponent implements OnInit {
                 linkGroup[key] = [];
             }
             linkGroup[key].push(links[i]);
+            console.log(linkmap[key] + ',' + linkGroup[key]);
         }
         for (let i = 0; i < links.length; i++) {
             const key =
                 links[i].source < links[i].target ? links[i].source + ':' + links[i].target : links[i].target + ':' + links[i].source;
             links[i].size = linkmap[key];
             // 同一组的关系进行编号
+            console.log(links[i].size + ',' + links[i].linknum);
             const group = linkGroup[key];
             const keyPair = key.split(':');
             const type = 'noself'; // 标示该组关系是指向两个不同实体还是同一个实体
