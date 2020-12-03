@@ -56,16 +56,16 @@ export class TopoComponent implements OnInit {
             { field: 'filename', header: '传输内容' }
         ];
         this.edgeOptions = [{ label: 'edge', value: 'edge' }, { label: 'edge2', value: 'edge2' }, { label: 'edge3', value: 'edge3' }];
-        const res = {
-            nodes: [{ id: 'edge1', name: 'edge1' }, { id: 'edge2', name: 'edge2' }, { id: 'edge3', name: 'edge3' }],
-            links: [
-                { source: 'edge1', target: 'edge2', content: ['3', '4'] },
-                { source: 'edge2', target: 'edge1', content: ['1'] },
-                { source: 'edge1', target: 'edge3', content: ['3', '5'] },
-                { source: 'edge2', target: 'edge3', content: ['1'] }
-            ]
-        };
-        this.onSuccess(res);
+        // const res = {
+        //     nodes: [{ id: 'edge1', name: 'edge1' }, { id: 'edge2', name: 'edge2' }, { id: 'edge3', name: 'edge3' }],
+        //     links: [
+        //         { source: 'edge1', target: 'edge2', content: ['3', '4'] },
+        //         { source: 'edge2', target: 'edge1', content: ['1'] },
+        //         { source: 'edge1', target: 'edge3', content: ['3', '5'] },
+        //         { source: 'edge2', target: 'edge3', content: ['1'] }
+        //     ]
+        // };
+        // this.onSuccess(res);
         this.uploader = new FileUploader({
             url: SERVER_API_URL + 'edge/api/importimage',
             method: 'POST',

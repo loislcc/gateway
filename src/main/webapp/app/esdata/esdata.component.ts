@@ -260,6 +260,29 @@ export class EsdataComponent implements OnInit {
             }
         });
     }
+    delone(id) {
+        this.confirmationService.confirm('删除信息').then(confirem => {
+            if (confirem) {
+                const idList = [];
+                idList.push(id);
+                this.dataService.deleteTaskIDList(idList).subscribe(
+                    res => {
+                        if (res.status === 201 || res.status === 200) {
+                            this.messageService.add({ severity: 'success', summary: '信息删除成功', detail: '' });
+                            this.refresh();
+                            this.datas = this.datas.filter(c => this.selectedInfo.indexOf(c) === -1);
+                            this.selectedInfo = [];
+                            return;
+                        }
+                    },
+                    error1 => {
+                        this.messageService.add({ severity: 'error', summary: '信息删除失败', detail: '' });
+                    }
+                );
+            } else {
+            }
+        });
+    }
 
     getData(): void {
         this.loadingData = true;
