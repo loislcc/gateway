@@ -36,7 +36,7 @@ export class MapComponent implements OnInit {
 
             const map = new BMap.Map('map');
             map.addTileLayer(tileLayer);
-            map.centerAndZoom(new BMap.Point(120.201929, 30.275255), 15);
+            map.centerAndZoom(new BMap.Point(116.353792, 39.98766), 15);
             map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
             // this.data_info = [[120.187564, 30.262842, '10.4.10.10'], [120.197122, 30.266367, '涵洞']];
 
@@ -94,7 +94,7 @@ export class MapComponent implements OnInit {
                 console.log(data);
                 this.data_info.forEach(e => {
                     // 删除同IP 节点位置
-                    if (e.ip === data.ip) {
+                    if (e.ip === data.ip && e.type === 'Device') {
                         const allOverlay = map.getOverlays();
                         for (let j = 0; j < allOverlay.length; j++) {
                             if (allOverlay[j].toString() === '[object Marker]') {
@@ -103,6 +103,31 @@ export class MapComponent implements OnInit {
                                 }
                             }
                         }
+
+                        const cx = e.longitude;
+                        const cy = e.latitude;
+                        const cmarker = new BMap.Marker(new BMap.Point(cx, cy)); // 创建标注
+                        const ccontent =
+                            '<div style="margin:0;line-height:20px;padding:2px;">' +
+                            '<img src = "../../content/images/access.png" alt = "" style = "float: right; zoom:1; overflow: hidden; width: 100px; height: 100px; margin-left: 3px;"/>' +
+                            '识别类别：' +
+                            e.category +
+                            '<br/> 名称：' +
+                            e.name +
+                            '<br/> 级别：' +
+                            e.level +
+                            '<br/> x：' +
+                            cx +
+                            '<br/> y：' +
+                            cy +
+                            '<br/> 来源：' +
+                            e.owner +
+                            '<br/> 时间：' +
+                            e.currentTime +
+                            '</div>';
+
+                        map.addOverlay(cmarker); // 将标注添加到地图中
+                        addClickHandler(ccontent, cmarker);
                     }
                 });
 
