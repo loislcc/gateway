@@ -1,7 +1,7 @@
 
 <div>
-    <p-table #dtf  [columns]="cols" [value]="datas" [responsive]="true"  [rows]="rows" [paginator]="true" [pageLinks]="3" [(selection)]="selectedInfo"
-             [lazy]="true" (onLazyLoad)="loadLazy($event)" [totalRecords]="totalCount" [loading]="loadingData" [resizableColumns]="true" dataKey="id">
+    <p-table #dtf  [columns]="cols" [value]="datas" [responsive]="true"  [rows]="10" [paginator]="true" [pageLinks]="3" [(selection)]="selectedInfo"
+             [totalRecords]="totalCount" [loading]="loadingData" [resizableColumns]="true" dataKey="id">
         <ng-template pTemplate="caption">
             <div class="ui-helper-clearfix">
                 <div style="float:left">
@@ -20,8 +20,10 @@
                 <th style="width: 3.25em">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th *ngFor="let col of columns" pResizableColumn>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn>
                     {{col.header}}
+                    <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+
                 </th>
                 <!--<th>-->
                 <!--操作-->

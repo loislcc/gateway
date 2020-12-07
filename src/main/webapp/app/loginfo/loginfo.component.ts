@@ -58,7 +58,7 @@ export class LoginfoComponent implements OnInit {
 
         this.loadingData = true;
         this.datas = [];
-        // this.loadData();
+        this.getData();
     }
 
     refresh() {
@@ -124,7 +124,8 @@ export class LoginfoComponent implements OnInit {
         this.dataService.queryDatainfo().subscribe(res => {
             this.loadingData = false;
             this.datas = res.body;
-            this.totalCount = parseInt(res.headers.get('X-Total-Count'), 10);
+            // this.totalCount = parseInt(res.headers.get('X-Total-Count'), 10);
+            this.totalCount = this.datas.length;
         });
     }
 }
