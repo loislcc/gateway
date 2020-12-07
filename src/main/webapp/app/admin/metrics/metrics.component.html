@@ -1,12 +1,12 @@
 <div>
     <h2>
-        <span id="metrics-page-heading">Application Metrics</span>
+        <span id="metrics-page-heading">平台质量</span>
         <button class="btn btn-primary float-right" (click)="refresh()">
             <fa-icon [icon]="'sync'"></fa-icon> <span>Refresh</span>
         </button>
     </h2>
 
-    <h3>JVM Metrics</h3>
+    <h3>JVM 指标</h3>
     <div class="row" *ngIf="!updatingMetrics">
         <jhi-jvm-memory
             class="col-md-4"

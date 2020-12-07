@@ -2,10 +2,10 @@
     <div class="col-8">
         <div *ngIf="user">
             <h2>
-                <span>User</span> [<b>{{user.login}}</b>]
+                <span>用户</span> [<b>{{user.login}}</b>]
             </h2>
             <dl class="row-md jh-entity-details">
-                <dt><span>Login</span></dt>
+                <dt><span>用户名</span></dt>
                 <dd>
                     <span>{{user.login}}</span>
                     <jhi-boolean
@@ -14,21 +14,21 @@
                         textFalse="Deactivated">
                     </jhi-boolean>
                 </dd>
-                <dt><span>First Name</span></dt>
+                <dt><span>名</span></dt>
                 <dd>{{user.firstName}}</dd>
-                <dt><span>Last Name</span></dt>
+                <dt><span>姓</span></dt>
                 <dd>{{user.lastName}}</dd>
-                <dt><span>Email</span></dt>
+                <dt><span>邮箱</span></dt>
                 <dd>{{user.email}}</dd>
-                <dt><span>Created By</span></dt>
+                <dt><span>创建者</span></dt>
                 <dd>{{user.createdBy}}</dd>
-                <dt><span>Created Date</span></dt>
+                <dt><span>创建时间</span></dt>
                 <dd>{{user.createdDate | date:'dd/MM/yy HH:mm' }}</dd>
-                <dt><span>Last Modified By</span></dt>
+                <dt><span>最近修改者</span></dt>
                 <dd>{{user.lastModifiedBy}}</dd>
-                <dt><span>Last Modified Date</span></dt>
+                <dt><span>最近修改时间</span></dt>
                 <dd>{{user.lastModifiedDate | date:'dd/MM/yy HH:mm'}}</dd>
-                <dt><span>Profiles</span></dt>
+                <dt><span>角色</span></dt>
                 <dd>
                     <ul class="list-unstyled">
                         <li *ngFor="let authority of user.authorities">
@@ -40,7 +40,7 @@
             <button type="submit"
                     routerLink="../../"
                     class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> Back</span>
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span> 返回</span>
             </button>
         </div>
     </div>

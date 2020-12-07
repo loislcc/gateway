@@ -1,9 +1,9 @@
 <div *ngIf="audits">
-    <h2 id="audits-page-heading">Audits</h2>
+    <h2 id="audits-page-heading">日志</h2>
 
     <div class="row">
         <div class="col-md-5">
-            <h4>Filter by date</h4>
+            <h4>按日期筛选</h4>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text">from</span>
@@ -22,10 +22,10 @@
         <table class="table table-sm table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-                <th jhiSortBy="auditEventDate"><span>Date</span><fa-icon [icon]="'sort'"></fa-icon></th>
-                <th jhiSortBy="principal"><span>User</span><fa-icon [icon]="'sort'"></fa-icon></th>
-                <th jhiSortBy="auditEventType"><span>State</span><fa-icon [icon]="'sort'"></fa-icon></th>
-                <th><span>Extra data</span></th>
+                <th jhiSortBy="auditEventDate"><span>日期</span><fa-icon [icon]="'sort'"></fa-icon></th>
+                <th jhiSortBy="principal"><span>用户</span><fa-icon [icon]="'sort'"></fa-icon></th>
+                <th jhiSortBy="auditEventType"><span>状态</span><fa-icon [icon]="'sort'"></fa-icon></th>
+                <th><span>备注</span></th>
             </tr>
             </thead>
             <tbody>
